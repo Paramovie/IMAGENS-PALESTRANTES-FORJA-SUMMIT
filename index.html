@@ -295,7 +295,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 32px 48px;
+      padding: 28px 44px;
       border-radius: 16px;
       border-left: 8px solid transparent;
       background: transparent;
@@ -312,11 +312,13 @@
     .panel-nav-left {
       display: flex;
       align-items: center;
-      gap: 40px;
+      gap: 36px;
+      padding-right: 24px;
     }
     .panel-nav-bullet {
       width: 16px;
       height: 16px;
+      min-width: 16px;
       border-radius: 50%;
       border: 2.5px solid rgba(216, 175, 99, 0.5);
       transition: all 0.35s ease;
@@ -327,9 +329,10 @@
       box-shadow: 0 0 18px var(--gold-primary);
     }
     .panel-nav-label {
-      font-size: 38px;
+      font-size: 32px;
       font-weight: 700;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.16em;
+      line-height: 1.25;
       color: rgba(247, 243, 235, 0.48);
       text-transform: uppercase;
       transition: color 0.35s ease;
@@ -340,6 +343,7 @@
     .panel-nav-square {
       width: 16px;
       height: 16px;
+      min-width: 16px;
       border: 2px solid rgba(216, 175, 99, 0.45);
       transition: all 0.35s ease;
     }
@@ -372,10 +376,10 @@
     }
     .right-active-title {
       font-family: var(--font-editorial);
-      font-size: 56px;
+      font-size: 52px;
       font-weight: 600;
       color: var(--off-white);
-      line-height: 1.05;
+      line-height: 1.08;
     }
     .right-active-folder {
       font-size: 26px;
@@ -554,8 +558,8 @@
       line-height: 1.05;
     }
     .panel-header-center .headline.headline-compact {
-      font-size: 84px;
-      letter-spacing: 0.06em;
+      font-size: 80px;
+      letter-spacing: 0.05em;
     }
 
     .speakers-row {
@@ -667,6 +671,9 @@
       text-transform: uppercase;
     }
 
+    /* =========================================================================
+       DESTAQUE INDIVIDUAL — ANIMAÇÃO LENTA, ELEGANTE E ESCALONADA
+       ========================================================================= */
     @keyframes spotFadeSettle {
       0% {
         opacity: 0;
@@ -1047,11 +1054,11 @@
       margin-top: 26px;
       font-family: var(--font-editorial);
       font-style: italic;
-      font-size: 56px;
+      font-size: 48px;
       font-weight: 600;
       color: var(--off-white);
       text-shadow: 0 6px 24px rgba(0, 0, 0, 0.95);
-      max-width: 1320px;
+      max-width: 1500px;
     }
 
     .spotlight-front-right-bottom {
@@ -1196,21 +1203,21 @@
           <div class="panel-nav-item active" id="nav-p0" onclick="selectPanel(0)">
             <div class="panel-nav-left">
               <span class="panel-nav-bullet"></span>
-              <span class="panel-nav-label">ALÉM DO CNPJ</span>
+              <span class="panel-nav-label">Além do CNPJ</span>
             </div>
             <span class="panel-nav-square"></span>
           </div>
           <div class="panel-nav-item" id="nav-p1" onclick="selectPanel(1)">
             <div class="panel-nav-left">
               <span class="panel-nav-bullet"></span>
-              <span class="panel-nav-label">NEGÓCIO DE MULHER</span>
+              <span class="panel-nav-label">Negócio de Mulher</span>
             </div>
             <span class="panel-nav-square"></span>
           </div>
           <div class="panel-nav-item" id="nav-p2" onclick="selectPanel(2)">
             <div class="panel-nav-left">
               <span class="panel-nav-bullet"></span>
-              <span class="panel-nav-label">O FUTURO DAS EMPRESAS</span>
+              <span class="panel-nav-label">O Futuro das empresas - Reforma tributária, Empregabilidade e NR1</span>
             </div>
             <span class="panel-nav-square"></span>
           </div>
@@ -1221,11 +1228,11 @@
         <section id="panel-group-view">
           <div class="center-top-meta">
             <span class="left-tag" id="group-panel-kicker">PAINEL 01 // SESSÃO EDITORIAL</span>
-            <span class="right-tag">07 PALESTRANTES</span>
+            <span class="right-tag" id="group-panel-count">07 PALESTRANTES</span>
           </div>
 
           <header class="panel-header-center">
-            <h2 class="headline" id="group-panel-title">ALÉM DO CNPJ</h2>
+            <h2 class="headline" id="group-panel-title">Além do CNPJ</h2>
           </header>
 
           <div class="speakers-row" id="speakers-row"></div>
@@ -1237,7 +1244,7 @@
           <div class="spotlight-top-meta">
             <span>FORJA SUMMIT</span>
             <div class="meta-rule"></div>
-            <span id="spot-top-panel">PAINEL 01 // ALÉM DO CNPJ</span>
+            <span id="spot-top-panel">PAINEL 01 // Além do CNPJ</span>
           </div>
 
           <div class="spotlight-halo-disc"></div>
@@ -1264,7 +1271,7 @@
               PAINEL<br/>01<br/>FORJA
             </div>
             <div class="spotlight-front-headline" id="spot-front-headline">LEITE</div>
-            <div class="spotlight-front-role" id="spot-front-role">ALÉM DO CNPJ • ALÉM DO CNPJ RBG</div>
+            <div class="spotlight-front-role" id="spot-front-role">Além do CNPJ • ALÉM DO CNPJ RBG</div>
           </div>
 
           <div class="spotlight-front-right-bottom">
@@ -1284,7 +1291,7 @@
 
           <div class="right-active-card">
             <span class="right-active-kicker" id="right-panel-tag">PAINEL ATIVO • 01 / 03</span>
-            <div class="right-active-title" id="right-panel-theme">ALÉM DO CNPJ</div>
+            <div class="right-active-title" id="right-panel-theme">Além do CNPJ</div>
             <div class="right-active-folder" id="right-panel-folder">PASTA: ALÉM DO CNPJ RBG</div>
             <div class="panel-dots" id="panel-dots">
               <div class="panel-dot active"></div>
@@ -1326,14 +1333,14 @@
     <button class="dock-btn" id="btn-fullscreen" onclick="toggleFullscreen()">Tela Cheia Telão</button>
     <button class="dock-btn" onclick="document.getElementById('file-loader-input').click()">Carregar PNGs / ZIP</button>
     <input type="file" id="file-loader-input" accept="image/png,image/webp,image/jpeg,.zip,application/zip" multiple />
-    <span class="dock-status" id="photo-counter">0/21 PNGs</span>
+    <span class="dock-status" id="photo-counter">0/20 PNGs</span>
   </div>
 
   <script>
     const CUTOUT_PHOTOS = {};
     const WITH_BG_PHOTOS = {};
-    const STORAGE_KEY = "FORJA_SUMMIT_PHOTOS_V2";
-    const IDB_NAME = "FORJA_SUMMIT_DB_V2";
+    const STORAGE_KEY = "FORJA_SUMMIT_PHOTOS_V3";
+    const IDB_NAME = "FORJA_SUMMIT_DB_V3";
     const IDB_STORE = "photos";
     let idbReady = null;
 
@@ -1341,52 +1348,61 @@
       {
         id: 1,
         code: "PAINEL 01",
-        headline: "ALÉM DO CNPJ",
+        headline: "Além do CNPJ",
         folder: "ALÉM DO CNPJ RBG",
         stackedLabel: "PAINEL<br/>01<br/>FORJA",
         speakers: [
-          { file: "Amanda_Leite-removebg-preview.png", name: "Amanda Leite", backWord: "AMANDA" },
-          { file: "Ana_Nicodemo-removebg-preview.png", name: "Ana Nicodemo", backWord: "NICODEMO" },
-          { file: "CAROL_OLIVEIRA-removebg-preview.png", name: "Carol Oliveira", backWord: "OLIVEIRA" },
-          { file: "DRA_LAÍS_BENTO-removebg-preview.png", name: "Dra. Laís Bento", backWord: "BENTO" },
-          { file: "DRA_Nayara_Curti1-removebg-preview.png", name: "Dra. Nayara Curti", backWord: "CURTI" },
-          { file: "DRA_PriscilLa_Hidalgo-removebg-preview.png", name: "Dra. Priscilla Hidalgo", backWord: "HIDALGO" },
-          { file: "DRA_Viviane_Vargas-removebg-preview.png", name: "Dra. Viviane Vargas", backWord: "VARGAS" }
+          { num: 1, file: "Amanda_Leite-removebg-preview.png", name: "Amanda Leite", backWord: "AMANDA" },
+          { num: 2, file: "Ana_Nicodemo-removebg-preview.png", name: "Ana Nicodemo", backWord: "NICODEMO" },
+          { num: 3, file: "CAROL_OLIVEIRA-removebg-preview.png", name: "Carol Oliveira", backWord: "OLIVEIRA" },
+          { num: 4, file: "DRA_LAÍS_BENTO-removebg-preview.png", name: "Dra. Laís Bento", backWord: "BENTO" },
+          { num: 5, file: "DRA_Nayara_Curti1-removebg-preview.png", name: "Dra. Nayara Curti", backWord: "CURTI" },
+          { num: 6, file: "DRA_PriscilLa_Hidalgo-removebg-preview.png", name: "Dra. Priscilla Hidalgo", backWord: "HIDALGO" },
+          { num: 7, file: "DRA_Viviane_Vargas-removebg-preview.png", name: "Dra. Viviane Vargas", backWord: "VARGAS" }
         ]
       },
       {
         id: 2,
         code: "PAINEL 02",
-        headline: "NEGÓCIO DE MULHER",
+        headline: "Negócio de Mulher",
         folder: "NEGÓCIO DE MULHER RBG",
         stackedLabel: "PAINEL<br/>02<br/>FORJA",
         speakers: [
-          { file: "Aline_Voltareli-removebg-preview.png", name: "Aline Voltareli", backWord: "VOLTARELI" },
-          { file: "Beatriz_Moraes-removebg-preview.png", name: "Beatriz Moraes", backWord: "MORAES" },
-          { file: "Dra._Fernanda_Bueno-removebg-preview.png", name: "Dra. Fernanda Bueno", backWord: "BUENO" },
-          { file: "Evelyn_Braga-removebg-preview.png", name: "Evelyn Braga", backWord: "BRAGA" },
-          { file: "HAGDa__MATOS-removebg-preview.png", name: "Hagda Matos", backWord: "MATOS" },
-          { file: "LUANA_AZEVEDO1-removebg-preview.png", name: "Luana Azevedo", backWord: "AZEVEDO" },
-          { file: "LUZIA_COSTA-removebg-preview.png", name: "Luzia Costa", backWord: "COSTA" }
+          { num: 8, file: "Aline_Voltareli-removebg-preview.png", name: "Aline Voltareli", backWord: "VOLTARELI" },
+          { num: 9, file: "Beatriz_Moraes-removebg-preview.png", name: "Beatriz Moraes", backWord: "MORAES" },
+          { num: 10, file: "Dra._Fernanda_Bueno-removebg-preview.png", name: "Dra. Fernanda Bueno", backWord: "BUENO" },
+          { num: 11, file: "Evelyn_Braga-removebg-preview.png", name: "Evelyn Braga", backWord: "BRAGA" },
+          { num: 12, file: "HAGDa__MATOS-removebg-preview.png", name: "Hagda Matos", backWord: "MATOS" },
+          { num: 13, file: "LUANA_AZEVEDO1-removebg-preview.png", name: "Luana Azevedo", backWord: "AZEVEDO" },
+          { num: 14, file: "LUZIA_COSTA-removebg-preview.png", name: "Luzia Costa", backWord: "COSTA" }
         ]
       },
       {
         id: 3,
         code: "PAINEL 03",
-        headline: "O FUTURO DAS EMPRESAS - REFORMA TRIBUTÁRIA, EMPREGABILIDADE E NR1",
+        headline: "O Futuro das empresas - Reforma tributária, Empregabilidade e NR1",
         folder: "O FUTURO DAS EMPRESAS RBG",
         stackedLabel: "PAINEL<br/>03<br/>FORJA",
         speakers: [
-          { file: "Elizângela_Santos-removebg-preview.png", name: "Elizângela Santos", backWord: "SANTOS" },
-          { file: "Juliana_Abreu-removebg-preview.png", name: "Juliana Abreu", backWord: "ABREU" },
-          { file: "Lucineia-removebg-preview.png", name: "Lucineia", backWord: "LUCINEIA" },
-          { file: "Luisa_Caldas-removebg-preview.png", name: "Luisa Caldas", backWord: "CALDAS" },
-          { file: "Lys-removebg-preview.png", name: "Lys", backWord: "LYS" },
-          { file: "Monica_Vargas-removebg-preview.png", name: "Monica Vargas", backWord: "VARGAS" },
-          { file: "Olga_Pacifico-removebg-preview.png", name: "Olga Pacifico", backWord: "PACIFICO" }
+          { num: 15, file: "Elizângela_Santos-removebg-preview.png", name: "Elizângela Santos", backWord: "SANTOS" },
+          { num: 16, file: "Juliana_Abreu-removebg-preview.png", name: "Juliana Abreu", backWord: "ABREU" },
+          { num: 17, file: "Lucineia-removebg-preview.png", name: "Lucineia", backWord: "LUCINEIA" },
+          { num: 18, file: "Luisa_Caldas-removebg-preview.png", name: "Luisa Caldas", backWord: "CALDAS" },
+          { num: 20, file: "Monica_Vargas-removebg-preview.png", name: "Monica Vargas", backWord: "VARGAS" },
+          { num: 21, file: "Olga_Pacifico-removebg-preview.png", name: "Olga Pacifico", backWord: "PACIFICO" }
         ]
       }
     ];
+
+    function getActiveSpeakerNumbers() {
+      const nums = [];
+      PANELS.forEach((panel) => {
+        panel.speakers.forEach((sp) => {
+          if (typeof sp.num === "number") nums.push(sp.num);
+        });
+      });
+      return nums;
+    }
 
     function extractSpeakerNumber(raw) {
       const base = String(raw || "").split("/").pop().replace(/\.[^.]+$/, "");
@@ -1433,7 +1449,7 @@
         if (!db) return;
         const tx = db.transaction(IDB_STORE, "readwrite");
         const store = tx.objectStore(IDB_STORE);
-        store.put(snapshot, "all_photos_v2");
+        store.put(snapshot, "all_photos_v3");
       } catch (err) {
         console.warn("Aviso ao salvar no IndexedDB:", err);
       }
@@ -1446,7 +1462,7 @@
         return await new Promise((resolve) => {
           const tx = db.transaction(IDB_STORE, "readonly");
           const store = tx.objectStore(IDB_STORE);
-          const req = store.get("all_photos_v2");
+          const req = store.get("all_photos_v3");
           req.onsuccess = () => {
             const data = req.result;
             if (data && typeof data === "object") {
@@ -1547,7 +1563,8 @@
     }
 
     function hydrateRepositoryPaths() {
-      for (let n = 1; n <= 21; n++) {
+      const activeNums = getActiveSpeakerNumbers();
+      activeNums.forEach((n) => {
         const padded = String(n).padStart(2, "0");
         if (!CUTOUT_PHOTOS[padded]) {
           CUTOUT_PHOTOS[padded] = `./${padded}.png`;
@@ -1555,7 +1572,7 @@
         if (!WITH_BG_PHOTOS[padded]) {
           WITH_BG_PHOTOS[padded] = `./${padded}-fundo.png`;
         }
-      }
+      });
       probeRepositoryImages();
     }
 
@@ -1574,7 +1591,8 @@
 
     async function probeRepositoryImages() {
       let changed = false;
-      for (let n = 1; n <= 21; n++) {
+      const activeNums = getActiveSpeakerNumbers();
+      for (const n of activeNums) {
         const padded = String(n).padStart(2, "0");
         const currentCutout = CUTOUT_PHOTOS[padded] || "";
         if (!currentCutout.startsWith("data:")) {
@@ -1707,8 +1725,9 @@
     }
 
     function updatePhotoCounter() {
+      const activeNums = getActiveSpeakerNumbers();
       let count = 0;
-      for (let n = 1; n <= 21; n++) {
+      activeNums.forEach((n) => {
         const padded = String(n).padStart(2, "0");
         const val = CUTOUT_PHOTOS[padded] || "";
         if (val.startsWith("data:image/") && !val.startsWith("data:image/svg+xml")) {
@@ -1716,9 +1735,9 @@
         } else if (val.startsWith("./")) {
           count++;
         }
-      }
+      });
       const el = document.getElementById("photo-counter");
-      if (el) el.textContent = `${count}/21 PNGs`;
+      if (el) el.textContent = `${count}/${activeNums.length} PNGs`;
     }
 
     const stageEl = document.getElementById("stage");
@@ -1832,11 +1851,12 @@
     function enterSpotlight(speakerIdx, manual = false) {
       try {
         if (manual) stopAutopilot();
-        isFloating = true;
-        currentSpeakerIdx = speakerIdx;
-
         const panel = PANELS[currentPanelIdx];
-        const sp = panel.speakers[speakerIdx];
+        const safeIdx = Math.max(0, Math.min(speakerIdx, panel.speakers.length - 1));
+        isFloating = true;
+        currentSpeakerIdx = safeIdx;
+
+        const sp = panel.speakers[safeIdx];
         const cleanName = sp.name.replace(/^(dra?\.?\s+)/i, "").trim();
         const nameParts = cleanName.split(/\s+/);
         const firstName = (nameParts[0] || sp.name).toUpperCase();
@@ -1891,10 +1911,11 @@
 
     function nextSpotlight() {
       stopAutopilot();
+      const totalInPanel = PANELS[currentPanelIdx].speakers.length;
       if (!isFloating) {
         enterSpotlight(0, false);
       } else {
-        const nextIdx = (currentSpeakerIdx + 1) % 7;
+        const nextIdx = (currentSpeakerIdx + 1) % totalInPanel;
         enterSpotlight(nextIdx, false);
       }
     }
@@ -1911,11 +1932,18 @@
       try {
         currentPanelIdx = panelIdx;
         const panel = PANELS[panelIdx];
+        const speakerCount = panel.speakers.length;
+        const countLabel = String(speakerCount).padStart(2, "0");
 
         document.getElementById("group-panel-kicker").textContent = `${panel.code} // SESSÃO EDITORIAL`;
+        document.getElementById("group-panel-count").textContent = `${countLabel} PALESTRANTES`;
+        const groupBtn = document.getElementById("btn-mode-group");
+        if (groupBtn) groupBtn.textContent = `Visão Grupo (${speakerCount})`;
+
         const titleEl = document.getElementById("group-panel-title");
         titleEl.textContent = panel.headline;
-        titleEl.classList.toggle("headline-compact", panel.headline.length > 28);
+        titleEl.classList.toggle("headline-compact", panel.headline.length > 26);
+
         document.getElementById("right-panel-tag").textContent = `PAINEL ATIVO • 0${panel.id} / 03`;
         document.getElementById("right-panel-theme").textContent = panel.headline;
         document.getElementById("right-panel-folder").textContent = `PASTA: ${panel.folder}`;
@@ -1934,10 +1962,11 @@
         });
 
         const row = document.getElementById("speakers-row");
+        row.style.gridTemplateColumns = `repeat(${speakerCount}, 1fr)`;
         row.innerHTML = "";
 
         panel.speakers.forEach((sp, idx) => {
-          const numStr = String(sp.num).padStart(2, "0");
+          const numStr = String(idx + 1).padStart(2, "0");
           const card = document.createElement("div");
           card.className = "speaker-card";
           card.onclick = () => enterSpotlight(idx, true);
@@ -1979,11 +2008,12 @@
 
     function runAutopilotTick() {
       if (!autopilot) return;
+      const totalInPanel = PANELS[currentPanelIdx].speakers.length;
       if (autopilotStep === 0) {
         exitSpotlight(false);
         autopilotStep = 1;
         autopilotTimer = setTimeout(runAutopilotTick, 7000);
-      } else if (autopilotStep >= 1 && autopilotStep <= 7) {
+      } else if (autopilotStep >= 1 && autopilotStep <= totalInPanel) {
         enterSpotlight(autopilotStep - 1, false);
         autopilotStep++;
         autopilotTimer = setTimeout(runAutopilotTick, 5500);
