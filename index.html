@@ -891,4 +891,1078 @@
       letter-spacing: 0.48em;
       text-transform: uppercase;
       color: var(--gold-light);
-      padding-
+      padding-left: 16px;
+      text-shadow: 0 4px 18px rgba(0, 0, 0, 0.85);
+    }
+
+    .spotlight-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 28px;
+      padding: 28px 54px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(20, 15, 9, 0.92) 0%, rgba(36, 26, 13, 0.94) 100%);
+      border: 2.5px solid var(--gold-primary);
+      box-shadow:
+        0 26px 64px rgba(0, 0, 0, 0.88),
+        0 0 42px rgba(216, 175, 99, 0.25);
+      backdrop-filter: blur(18px);
+    }
+    .spotlight-pill-name {
+      font-family: var(--font-ui);
+      font-size: 56px;
+      font-weight: 700;
+      color: var(--off-white);
+      letter-spacing: 0.02em;
+    }
+    .spotlight-pill-badge {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-light), var(--gold-primary));
+      color: #120c05;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      font-weight: 900;
+      box-shadow: 0 6px 20px rgba(216, 175, 99, 0.5);
+    }
+
+    .spotlight-front-left {
+      position: absolute;
+      left: 260px;
+      bottom: 185px;
+      z-index: 30;
+      max-width: 1700px;
+      opacity: 0;
+      transform: scale(1.015);
+      transition:
+        transform 0.72s cubic-bezier(0.22, 1, 0.36, 1) 0.16s,
+        opacity 0.68s cubic-bezier(0.22, 1, 0.36, 1) 0.16s;
+    }
+    #stage.is-floating .spotlight-front-left {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .spotlight-panel-stacked {
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: 0.38em;
+      line-height: 1.55;
+      color: var(--gold-light);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      text-shadow: 0 6px 24px rgba(0, 0, 0, 0.9);
+    }
+
+    .spotlight-front-headline {
+      font-family: var(--font-display);
+      font-size: 158px;
+      font-weight: 800;
+      line-height: 0.96;
+      letter-spacing: 0.03em;
+      background: linear-gradient(180deg, #ffffff 0%, #f4dca8 65%, #d8af63 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 16px 38px rgba(0, 0, 0, 0.95));
+    }
+
+    .spotlight-front-role {
+      margin-top: 26px;
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-size: 56px;
+      font-weight: 600;
+      color: var(--off-white);
+      text-shadow: 0 6px 24px rgba(0, 0, 0, 0.95);
+      max-width: 1320px;
+    }
+
+    .spotlight-front-right-bottom {
+      position: absolute;
+      right: 260px;
+      bottom: 185px;
+      z-index: 30;
+      text-align: right;
+      opacity: 0;
+      transform: scale(1.015);
+      transition:
+        transform 0.72s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+        opacity 0.68s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
+    }
+    #stage.is-floating .spotlight-front-right-bottom {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .spotlight-front-right-bottom .monogram {
+      font-family: var(--font-display);
+      font-size: 112px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      background: linear-gradient(135deg, var(--gold-light), var(--gold-primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+    }
+    .spotlight-front-right-bottom .topic-caption {
+      margin-top: 14px;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--muted-cream);
+    }
+
+    #operator-dock {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 14px;
+      background: rgba(12, 9, 5, 0.9);
+      border: 1px solid rgba(216, 175, 99, 0.45);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    #operator-dock.hidden-dock {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(-50%) translateY(20px);
+    }
+
+    .dock-btn {
+      background: rgba(216, 175, 99, 0.14);
+      color: var(--off-white);
+      border: 1px solid rgba(216, 175, 99, 0.35);
+      border-radius: 9px;
+      padding: 6px 11px;
+      font-family: var(--font-ui);
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .dock-btn:hover {
+      background: rgba(216, 175, 99, 0.3);
+      border-color: var(--gold-light);
+    }
+    .dock-btn.active {
+      background: linear-gradient(135deg, var(--gold-primary), #a87b32);
+      color: #0b0804;
+      border-color: var(--gold-light);
+      font-weight: 700;
+    }
+    .dock-sep {
+      width: 1px;
+      height: 20px;
+      background: rgba(216, 175, 99, 0.25);
+    }
+    .dock-status {
+      font-size: 11px;
+      color: var(--gold-light);
+      padding: 0 5px;
+      font-weight: 600;
+    }
+
+    #file-loader-input {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="viewport">
+    <div id="stage">
+      <canvas id="waves-canvas"></canvas>
+      <div class="stage-grain"></div>
+
+      <div id="zone-guides">
+        <div class="zone-line left"></div>
+        <div class="zone-line right"></div>
+        <div class="zone-badge" style="left: 10%;">ZONA ESQUERDA • 25% (2288px)</div>
+        <div class="zone-badge" style="left: 46%;">PALCO CENTRAL • 50% (4576px)</div>
+        <div class="zone-badge" style="left: 82%;">ZONA DIREITA • 25% (2288px)</div>
+      </div>
+
+      <aside class="side-wing left">
+        <div class="left-top-bar">
+          <span class="left-top-eyebrow">FORJA SUMMIT</span>
+          <div class="live-pill">
+            <span class="live-dot"></span>
+            <span>AO VIVO</span>
+          </div>
+        </div>
+
+        <div class="brand-lockup">
+          <div class="monogram-box"><span>F</span></div>
+          <div class="brand-wordmark">
+            <div class="main">FORJA</div>
+            <div class="sub">SUMMIT</div>
+            <p class="editorial-tagline">Liderança, Posicionamento &amp; Legado</p>
+          </div>
+          <div class="circular-seal">
+            <svg viewBox="0 0 200 200">
+              <defs>
+                <path id="sealTextPath" d="M 100, 100 m -74, 0 a 74,74 0 1,1 148,0 a 74,74 0 1,1 -148,0" />
+              </defs>
+              <text fill="#d8af63" font-size="13.5" font-weight="700" letter-spacing="4.2">
+                <textPath href="#sealTextPath" startOffset="0%">
+                  • A AÇÃO ACONTECE DENTRO •
+                </textPath>
+              </text>
+            </svg>
+            <div class="seal-center-dot"></div>
+          </div>
+        </div>
+
+        <nav class="panel-nav-list" id="left-panel-nav">
+          <div class="panel-nav-item active" id="nav-p0" onclick="selectPanel(0)">
+            <div class="panel-nav-left">
+              <span class="panel-nav-bullet"></span>
+              <span class="panel-nav-label">ALÉM DO CNPJ</span>
+            </div>
+            <span class="panel-nav-square"></span>
+          </div>
+          <div class="panel-nav-item" id="nav-p1" onclick="selectPanel(1)">
+            <div class="panel-nav-left">
+              <span class="panel-nav-bullet"></span>
+              <span class="panel-nav-label">EMPREGABILIDADE E NEGÓCIOS</span>
+            </div>
+            <span class="panel-nav-square"></span>
+          </div>
+          <div class="panel-nav-item" id="nav-p2" onclick="selectPanel(2)">
+            <div class="panel-nav-left">
+              <span class="panel-nav-bullet"></span>
+              <span class="panel-nav-label">REFORMA TRIBUTÁRIA</span>
+            </div>
+            <span class="panel-nav-square"></span>
+          </div>
+        </nav>
+      </aside>
+
+      <main id="center-stage">
+        <section id="panel-group-view">
+          <div class="center-top-meta">
+            <span class="left-tag" id="group-panel-kicker">PAINEL 01 // SESSÃO EDITORIAL</span>
+            <span class="right-tag">07 PALESTRANTES</span>
+          </div>
+
+          <header class="panel-header-center">
+            <h2 class="headline" id="group-panel-title">ALÉM DO CNPJ</h2>
+          </header>
+
+          <div class="speakers-row" id="speakers-row"></div>
+        </section>
+
+        <section id="spotlight-view" onclick="exitSpotlight(true)" title="Clique para voltar à visão de grupo">
+          <div class="spotlight-arch-frame"></div>
+
+          <div class="spotlight-top-meta">
+            <span>FORJA SUMMIT</span>
+            <div class="meta-rule"></div>
+            <span id="spot-top-panel">PAINEL 01 // ALÉM DO CNPJ</span>
+          </div>
+
+          <div class="spotlight-halo-disc"></div>
+          <div class="spotlight-halo-ring"></div>
+
+          <div class="spotlight-back-word" id="spot-back-word">AMANDA</div>
+          <div class="spotlight-mid-connector" id="spot-mid-connector">em destaque</div>
+
+          <div class="spotlight-portrait-wrap">
+            <img id="spotlight-img" src="" alt="Palestrante em Destaque" />
+          </div>
+
+          <div class="spotlight-front-pill-group">
+            <div class="spotlight-kicker-spaced">PALESTRANTE</div>
+            <div class="spotlight-pill">
+              <span class="spotlight-pill-name" id="spot-pill-name">Amanda Leite</span>
+              <span class="spotlight-pill-badge">✓</span>
+            </div>
+          </div>
+
+          <div class="spotlight-front-left">
+            <div class="spotlight-panel-stacked" id="spot-left-stacked">
+              PAINEL<br/>01<br/>FORJA
+            </div>
+            <div class="spotlight-front-headline" id="spot-front-headline">LEITE</div>
+            <div class="spotlight-front-role" id="spot-front-role">ALÉM DO CNPJ • ALÉM DO CNPJ RBG</div>
+          </div>
+
+          <div class="spotlight-front-right-bottom">
+            <div class="monogram">FS</div>
+            <div class="topic-caption" id="spot-topic-caption">PAINEL 01</div>
+          </div>
+        </section>
+      </main>
+
+      <aside class="side-wing right">
+        <div class="right-top-group">
+          <div class="right-progress-bars">
+            <div class="right-prog-seg active" id="prog-0" onclick="selectPanel(0)"></div>
+            <div class="right-prog-seg" id="prog-1" onclick="selectPanel(1)"></div>
+            <div class="right-prog-seg" id="prog-2" onclick="selectPanel(2)"></div>
+          </div>
+
+          <div class="right-active-card">
+            <span class="right-active-kicker" id="right-panel-tag">PAINEL ATIVO • 01 / 03</span>
+            <div class="right-active-title" id="right-panel-theme">ALÉM DO CNPJ</div>
+            <div class="right-active-folder" id="right-panel-folder">PASTA: ALÉM DO CNPJ RBG</div>
+            <div class="panel-dots" id="panel-dots">
+              <div class="panel-dot active"></div>
+              <div class="panel-dot"></div>
+              <div class="panel-dot"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-emblem-center">
+          <div class="right-circle-crest"><span>F</span></div>
+          <div class="right-mode-caption" id="right-mode-caption">VISÃO GERAL DO PAINEL</div>
+        </div>
+
+        <div class="right-bottom-meta">
+          <div class="meta-col">
+            <span class="meta-kicker">LOCAL</span>
+            <span class="meta-value">ARENA FULLTRADER</span>
+          </div>
+          <div class="meta-col right">
+            <span class="meta-kicker">EDIÇÃO</span>
+            <span class="meta-value">SÃO JOSÉ DOS CAMPOS</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div id="operator-dock">
+    <button class="dock-btn active" id="btn-p0" onclick="selectPanel(0)">Painel 1</button>
+    <button class="dock-btn" id="btn-p1" onclick="selectPanel(1)">Painel 2</button>
+    <button class="dock-btn" id="btn-p2" onclick="selectPanel(2)">Painel 3</button>
+    <div class="dock-sep"></div>
+    <button class="dock-btn active" id="btn-mode-group" onclick="exitSpotlight(true)">Visão Grupo (7)</button>
+    <button class="dock-btn" id="btn-next-spot" onclick="nextSpotlight()">Próximo Destaque ➔</button>
+    <div class="dock-sep"></div>
+    <button class="dock-btn" id="btn-autopilot" onclick="toggleAutopilot()">Piloto Auto: OFF</button>
+    <button class="dock-btn" id="btn-guides" onclick="toggleGuides()">Guias 25/50/25</button>
+    <button class="dock-btn" id="btn-fullscreen" onclick="toggleFullscreen()">Tela Cheia Telão</button>
+    <button class="dock-btn" onclick="document.getElementById('file-loader-input').click()">Carregar PNGs / ZIP</button>
+    <input type="file" id="file-loader-input" accept="image/png,image/webp,.zip,application/zip" multiple />
+    <span class="dock-status" id="photo-counter">0/21 PNGs</span>
+  </div>
+
+  <script>
+    const EMBEDDED_PHOTOS = {};
+    const STORAGE_KEY = "FORJA_SUMMIT_PHOTOS_V1";
+    const IDB_NAME = "FORJA_SUMMIT_DB";
+    const IDB_STORE = "photos";
+    let idbReady = null;
+
+    // Caminhos diretos de cada imagem na raiz do repositório / GitHub Pages
+    const EXTERNAL_PHOTO_URLS = {
+      "Amanda_Leite-removebg-preview.png": "./Amanda_Leite-removebg-preview.png",
+      "Ana_Nicodemo-removebg-preview.png": "./Ana_Nicodemo-removebg-preview.png",
+      "CAROL_OLIVEIRA-removebg-preview.png": "./CAROL_OLIVEIRA-removebg-preview.png",
+      "DRA_LAÍS_BENTO-removebg-preview.png": "./DRA_LAÍS_BENTO-removebg-preview.png",
+      "DRA_Nayara_Curti1-removebg-preview.png": "./DRA_Nayara_Curti1-removebg-preview.png",
+      "DRA_PriscilLa_Hidalgo-removebg-preview.png": "./DRA_PriscilLa_Hidalgo-removebg-preview.png",
+      "DRA_Viviane_Vargas-removebg-preview.png": "./DRA_Viviane_Vargas-removebg-preview.png",
+      "Aline_Voltareli-removebg-preview.png": "./Aline_Voltareli-removebg-preview.png",
+      "Beatriz_Moraes-removebg-preview.png": "./Beatriz_Moraes-removebg-preview.png",
+      "Dra._Fernanda_Bueno-removebg-preview.png": "./Dra._Fernanda_Bueno-removebg-preview.png",
+      "Evelyn_Braga-removebg-preview.png": "./Evelyn_Braga-removebg-preview.png",
+      "HAGDa__MATOS-removebg-preview.png": "./HAGDa__MATOS-removebg-preview.png",
+      "LUANA_AZEVEDO1-removebg-preview.png": "./LUANA_AZEVEDO1-removebg-preview.png",
+      "LUZIA_COSTA-removebg-preview.png": "./LUZIA_COSTA-removebg-preview.png",
+      "Elizângela_Santos-removebg-preview.png": "./Elizângela_Santos-removebg-preview.png",
+      "Juliana_Abreu-removebg-preview.png": "./Juliana_Abreu-removebg-preview.png",
+      "Lucineia-removebg-preview.png": "./Lucineia-removebg-preview.png",
+      "Luisa_Caldas-removebg-preview.png": "./Luisa_Caldas-removebg-preview.png",
+      "Lys-removebg-preview.png": "./Lys-removebg-preview.png",
+      "Monica_Vargas-removebg-preview.png": "./Monica_Vargas-removebg-preview.png",
+      "Olga_Pacifico-removebg-preview.png": "./Olga_Pacifico-removebg-preview.png"
+    };
+
+    function openPhotoDatabase() {
+      if (idbReady) return idbReady;
+      idbReady = new Promise((resolve) => {
+        try {
+          if (!("indexedDB" in window)) {
+            resolve(null);
+            return;
+          }
+          const req = indexedDB.open(IDB_NAME, 1);
+          req.onupgradeneeded = () => {
+            const db = req.result;
+            if (!db.objectStoreNames.contains(IDB_STORE)) {
+              db.createObjectStore(IDB_STORE);
+            }
+          };
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => resolve(null);
+        } catch (_) {
+          resolve(null);
+        }
+      });
+      return idbReady;
+    }
+
+    async function savePhotosToIndexedDb(snapshot) {
+      try {
+        const db = await openPhotoDatabase();
+        if (!db) return;
+        const tx = db.transaction(IDB_STORE, "readwrite");
+        const store = tx.objectStore(IDB_STORE);
+        store.put(snapshot, "all_photos");
+      } catch (err) {
+        console.warn("Aviso ao salvar no IndexedDB:", err);
+      }
+    }
+
+    async function loadPhotosFromIndexedDb() {
+      try {
+        const db = await openPhotoDatabase();
+        if (!db) return false;
+        return await new Promise((resolve) => {
+          const tx = db.transaction(IDB_STORE, "readonly");
+          const store = tx.objectStore(IDB_STORE);
+          const req = store.get("all_photos");
+          req.onsuccess = () => {
+            const data = req.result;
+            if (data && typeof data === "object") {
+              Object.entries(data).forEach(([k, v]) => {
+                if (typeof v === "string" && v.length > 0) {
+                  EMBEDDED_PHOTOS[k] = v;
+                }
+              });
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          };
+          req.onerror = () => resolve(false);
+        });
+      } catch (_) {
+        return false;
+      }
+    }
+
+    function hydrateExternalPhotos() {
+      Object.entries(EXTERNAL_PHOTO_URLS).forEach(([filename, url]) => {
+        if (typeof url === "string" && url.trim().length > 0) {
+          const val = url.trim();
+          const baseName = String(filename || "").split("/").pop();
+          if (!EMBEDDED_PHOTOS[baseName]) {
+            EMBEDDED_PHOTOS[baseName] = val;
+          }
+          const norm = normalizeKey(baseName);
+          if (norm && !EMBEDDED_PHOTOS[`__norm:${norm}`]) {
+            EMBEDDED_PHOTOS[`__norm:${norm}`] = val;
+          }
+        }
+      });
+    }
+
+    function persistPhotosToStorage() {
+      savePhotosToIndexedDb({ ...EMBEDDED_PHOTOS });
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(EMBEDDED_PHOTOS));
+      } catch (err) {
+        console.warn("Storage local atingiu limite; usando IndexedDB:", err);
+      }
+    }
+
+    function loadPhotosFromStorage() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === "object") {
+          Object.entries(parsed).forEach(([k, v]) => {
+            if (typeof v === "string") {
+              EMBEDDED_PHOTOS[k] = v;
+            }
+          });
+        }
+      } catch (err) {
+        console.warn("Erro ao restaurar fotos salvas:", err);
+      }
+    }
+
+    function normalizeKey(raw) {
+      return String(raw || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\.(png|jpg|jpeg|webp)$/i, "")
+        .replace(/[-_]?removebg[-_]?preview/gi, "")
+        .replace(/\d+$/g, "")
+        .replace(/^dra?[._\s]+/i, "")
+        .replace(/[^a-zA-Z0-9]+/g, "")
+        .toLowerCase()
+        .trim();
+    }
+
+    function storePhotoByName(filename, dataUrl) {
+      const baseName = String(filename || "").split("/").pop();
+      EMBEDDED_PHOTOS[baseName] = dataUrl;
+      const norm = normalizeKey(baseName);
+      if (norm) {
+        EMBEDDED_PHOTOS[`__norm:${norm}`] = dataUrl;
+      }
+      persistPhotosToStorage();
+    }
+
+    function countMatchedSpeakers() {
+      let matched = 0;
+      PANELS.forEach((panel) => {
+        panel.speakers.forEach((sp) => {
+          if (findPhotoUrl(sp)) matched++;
+        });
+      });
+      return matched;
+    }
+
+    function updatePhotoCounter() {
+      const matched = countMatchedSpeakers();
+      const el = document.getElementById("photo-counter");
+      if (el) el.textContent = `${matched}/21 PNGs`;
+    }
+
+    const PANELS = [
+      {
+        id: 1,
+        code: "PAINEL 01",
+        headline: "ALÉM DO CNPJ",
+        folder: "ALÉM DO CNPJ RBG",
+        stackedLabel: "PAINEL<br/>01<br/>FORJA",
+        speakers: [
+          { file: "Amanda_Leite-removebg-preview.png", name: "Amanda Leite", backWord: "AMANDA" },
+          { file: "Ana_Nicodemo-removebg-preview.png", name: "Ana Nicodemo", backWord: "NICODEMO" },
+          { file: "CAROL_OLIVEIRA-removebg-preview.png", name: "Carol Oliveira", backWord: "OLIVEIRA" },
+          { file: "DRA_LAÍS_BENTO-removebg-preview.png", name: "Dra. Laís Bento", backWord: "BENTO" },
+          { file: "DRA_Nayara_Curti1-removebg-preview.png", name: "Dra. Nayara Curti", backWord: "CURTI" },
+          { file: "DRA_PriscilLa_Hidalgo-removebg-preview.png", name: "Dra. Priscilla Hidalgo", backWord: "HIDALGO" },
+          { file: "DRA_Viviane_Vargas-removebg-preview.png", name: "Dra. Viviane Vargas", backWord: "VARGAS" }
+        ]
+      },
+      {
+        id: 2,
+        code: "PAINEL 02",
+        headline: "EMPREGABILIDADE E NEGÓCIOS",
+        folder: "NEGÓCIOS RBG",
+        stackedLabel: "PAINEL<br/>02<br/>FORJA",
+        speakers: [
+          { file: "Aline_Voltareli-removebg-preview.png", name: "Aline Voltareli", backWord: "VOLTARELI" },
+          { file: "Beatriz_Moraes-removebg-preview.png", name: "Beatriz Moraes", backWord: "MORAES" },
+          { file: "Dra._Fernanda_Bueno-removebg-preview.png", name: "Dra. Fernanda Bueno", backWord: "BUENO" },
+          { file: "Evelyn_Braga-removebg-preview.png", name: "Evelyn Braga", backWord: "BRAGA" },
+          { file: "HAGDa__MATOS-removebg-preview.png", name: "Hagda Matos", backWord: "MATOS" },
+          { file: "LUANA_AZEVEDO1-removebg-preview.png", name: "Luana Azevedo", backWord: "AZEVEDO" },
+          { file: "LUZIA_COSTA-removebg-preview.png", name: "Luzia Costa", backWord: "COSTA" }
+        ]
+      },
+      {
+        id: 3,
+        code: "PAINEL 03",
+        headline: "REFORMA TRIBUTÁRIA",
+        folder: "REFORMA RBG",
+        stackedLabel: "PAINEL<br/>03<br/>FORJA",
+        speakers: [
+          { file: "Elizângela_Santos-removebg-preview.png", name: "Elizângela Santos", backWord: "SANTOS" },
+          { file: "Juliana_Abreu-removebg-preview.png", name: "Juliana Abreu", backWord: "ABREU" },
+          { file: "Lucineia-removebg-preview.png", name: "Lucineia", backWord: "LUCINEIA" },
+          { file: "Luisa_Caldas-removebg-preview.png", name: "Luisa Caldas", backWord: "CALDAS" },
+          { file: "Lys-removebg-preview.png", name: "Lys", backWord: "LYS" },
+          { file: "Monica_Vargas-removebg-preview.png", name: "Monica Vargas", backWord: "VARGAS" },
+          { file: "Olga_Pacifico-removebg-preview.png", name: "Olga Pacifico", backWord: "PACIFICO" }
+        ]
+      }
+    ];
+
+    function createSilhouettePlaceholder(name) {
+      const cleaned = String(name || "FS").replace(/^(dra?\.?\s+)/i, "").trim();
+      const initials = cleaned
+        .split(/\s+/)
+        .map((p) => p[0] || "")
+        .slice(0, 2)
+        .join("")
+        .toUpperCase();
+
+      const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="900" height="1400" viewBox="0 0 900 1400">
+          <defs>
+            <linearGradient id="sil" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3a2a14"/>
+              <stop offset="55%" stop-color="#1c140a"/>
+              <stop offset="100%" stop-color="#0b0804"/>
+            </linearGradient>
+            <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#f4dca8" stop-opacity="0.85"/>
+              <stop offset="100%" stop-color="#d8af63" stop-opacity="0.15"/>
+            </linearGradient>
+          </defs>
+          <path d="M450 180 C555 180 630 265 630 375 C630 475 565 555 495 575 L495 620 C675 655 795 795 825 1400 L75 1400 C105 795 225 655 405 620 L405 575 C335 555 270 475 270 375 C270 265 345 180 450 180 Z"
+                fill="url(#sil)" stroke="url(#rim)" stroke-width="5"/>
+          <text x="450" y="960" text-anchor="middle" fill="#d8af63" fill-opacity="0.62"
+                font-family="Cinzel, serif" font-size="112" font-weight="700" letter-spacing="8">${initials}</text>
+        </svg>`;
+      return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+    }
+
+    function findPhotoUrl(speaker) {
+      if (!speaker) return null;
+      if (EMBEDDED_PHOTOS[speaker.file]) return EMBEDDED_PHOTOS[speaker.file];
+
+      const normFile = normalizeKey(speaker.file);
+      if (EMBEDDED_PHOTOS[`__norm:${normFile}`]) {
+        return EMBEDDED_PHOTOS[`__norm:${normFile}`];
+      }
+
+      const normName = normalizeKey(speaker.name);
+      if (EMBEDDED_PHOTOS[`__norm:${normName}`]) {
+        return EMBEDDED_PHOTOS[`__norm:${normName}`];
+      }
+
+      const entry = Object.entries(EMBEDDED_PHOTOS).find(([key]) => {
+        if (!key.startsWith("__norm:")) return false;
+        const k = key.replace("__norm:", "");
+        return k.includes(normName) || normName.includes(k);
+      });
+      return entry ? entry[1] : null;
+    }
+
+    function resolvePhoto(speaker) {
+      return findPhotoUrl(speaker) || createSilhouettePlaceholder(speaker.name);
+    }
+
+    const stageEl = document.getElementById("stage");
+    const viewportEl = document.getElementById("viewport");
+    const STAGE_WIDTH = 9152;
+    const STAGE_HEIGHT = 2106;
+    let pseudoFullscreen = false;
+
+    function isFullscreenAllowed() {
+      try {
+        if (document.fullscreenEnabled === false) return false;
+        const policy = document.featurePolicy || document.permissionsPolicy;
+        if (policy && typeof policy.allowsFeature === "function") {
+          return policy.allowsFeature("fullscreen");
+        }
+        return true;
+      } catch (_) {
+        return false;
+      }
+    }
+
+    function fitStage() {
+      try {
+        if (!stageEl) return;
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const scale = Math.min(vw / STAGE_WIDTH, vh / STAGE_HEIGHT);
+        stageEl.style.transform = `scale(${scale})`;
+      } catch (err) {
+        console.error("Erro ao escalar o palco:", err);
+      }
+    }
+
+    async function toggleFullscreen() {
+      try {
+        const target = viewportEl || document.documentElement;
+        const currentFs = Boolean(document.fullscreenElement || pseudoFullscreen);
+
+        if (!currentFs) {
+          if (isFullscreenAllowed() && target.requestFullscreen) {
+            await target.requestFullscreen();
+          } else {
+            pseudoFullscreen = true;
+            if (viewportEl) viewportEl.classList.add("pseudo-fullscreen");
+            updateFullscreenButton();
+          }
+        } else {
+          if (document.fullscreenElement && document.exitFullscreen) {
+            await document.exitFullscreen();
+          }
+          if (pseudoFullscreen) {
+            pseudoFullscreen = false;
+            if (viewportEl) viewportEl.classList.remove("pseudo-fullscreen");
+            updateFullscreenButton();
+          }
+        }
+      } catch (err) {
+        if (err && err.name === "NotAllowedError" || String(err).includes("permissions policy")) {
+          pseudoFullscreen = !pseudoFullscreen;
+          if (viewportEl) viewportEl.classList.toggle("pseudo-fullscreen", pseudoFullscreen);
+          updateFullscreenButton();
+        } else {
+          console.error("Erro ao alternar tela cheia:", err);
+        }
+      } finally {
+        fitStage();
+      }
+    }
+
+    function updateFullscreenButton() {
+      const btn = document.getElementById("btn-fullscreen");
+      if (!btn) return;
+      const isFs = Boolean(document.fullscreenElement || pseudoFullscreen);
+      btn.classList.toggle("active", isFs);
+      btn.textContent = isFs ? "Sair Tela Cheia" : "Tela Cheia Telão";
+      fitStage();
+    }
+
+    document.addEventListener("fullscreenchange", updateFullscreenButton);
+    window.addEventListener("resize", fitStage);
+    fitStage();
+
+    let currentPanelIdx = 0;
+    let isFloating = false;
+    let currentSpeakerIdx = 0;
+    let autopilot = false;
+    let autopilotTimer = null;
+    let autopilotStep = 0;
+
+    function formatCardNameLines(fullName) {
+      const parts = String(fullName || "").trim().split(/\s+/);
+      if (parts.length <= 2) {
+        return parts.join("<br/>");
+      }
+      if (/^dra?\.?$/i.test(parts[0])) {
+        return `${parts[0]} ${parts[1]}<br/>${parts.slice(2).join(" ")}`;
+      }
+      return `${parts[0]}<br/>${parts.slice(1).join(" ")}`;
+    }
+
+    function stopAutopilot() {
+      autopilot = false;
+      clearTimeout(autopilotTimer);
+      const btn = document.getElementById("btn-autopilot");
+      if (btn) {
+        btn.textContent = "Piloto Auto: OFF";
+        btn.classList.remove("active");
+      }
+    }
+
+    function enterSpotlight(speakerIdx, manual = false) {
+      try {
+        if (manual) stopAutopilot();
+        isFloating = true;
+        currentSpeakerIdx = speakerIdx;
+
+        const panel = PANELS[currentPanelIdx];
+        const sp = panel.speakers[speakerIdx];
+        const cleanName = sp.name.replace(/^(dra?\.?\s+)/i, "").trim();
+        const nameParts = cleanName.split(/\s+/);
+        const firstName = (nameParts[0] || sp.name).toUpperCase();
+        const displayHeadline = (nameParts.length > 1 ? nameParts.slice(1).join(" ") : cleanName).toUpperCase();
+
+        document.getElementById("right-mode-caption").textContent = "DESTAQUE INDIVIDUAL HERO";
+        document.getElementById("spot-top-panel").textContent = `${panel.code} // ${panel.headline}`;
+        document.getElementById("spot-back-word").textContent =
+          firstName.length <= 9 ? firstName : (sp.backWord || firstName);
+        document.getElementById("spot-mid-connector").textContent = "em destaque";
+
+        const spotImg = document.getElementById("spotlight-img");
+        spotImg.src = resolvePhoto(sp);
+        spotImg.alt = sp.name;
+
+        document.getElementById("spot-pill-name").textContent = sp.name;
+        document.getElementById("spot-left-stacked").innerHTML = panel.stackedLabel;
+        document.getElementById("spot-front-headline").textContent = displayHeadline;
+        document.getElementById("spot-front-role").textContent = `${panel.headline} • ${panel.folder}`;
+        document.getElementById("spot-topic-caption").textContent = panel.code;
+
+        stageEl.classList.remove("is-floating");
+        void stageEl.offsetWidth;
+        requestAnimationFrame(() => {
+          stageEl.classList.add("is-floating");
+        });
+
+        document.getElementById("btn-mode-group").classList.remove("active");
+        document.getElementById("btn-next-spot").classList.add("active");
+      } catch (err) {
+        console.error("Erro ao abrir destaque individual:", err);
+      }
+    }
+
+    function exitSpotlight(manual = true) {
+      try {
+        if (manual) stopAutopilot();
+        isFloating = false;
+        stageEl.classList.remove("is-floating");
+        document.getElementById("right-mode-caption").textContent = "VISÃO GERAL DO PAINEL";
+        document.getElementById("btn-mode-group").classList.add("active");
+        document.getElementById("btn-next-spot").classList.remove("active");
+      } catch (err) {
+        console.error("Erro ao sair do destaque individual:", err);
+      }
+    }
+
+    function nextSpotlight() {
+      stopAutopilot();
+      if (!isFloating) {
+        enterSpotlight(0, false);
+      } else {
+        const nextIdx = (currentSpeakerIdx + 1) % 7;
+        enterSpotlight(nextIdx, false);
+      }
+    }
+
+    function selectPanel(idx) {
+      stopAutopilot();
+      renderPanel(idx);
+      if (isFloating) {
+        enterSpotlight(0, false);
+      }
+    }
+
+    function renderPanel(panelIdx) {
+      try {
+        currentPanelIdx = panelIdx;
+        const panel = PANELS[panelIdx];
+
+        document.getElementById("group-panel-kicker").textContent = `${panel.code} // SESSÃO EDITORIAL`;
+        document.getElementById("group-panel-title").textContent = panel.headline;
+        document.getElementById("right-panel-tag").textContent = `PAINEL ATIVO • 0${panel.id} / 03`;
+        document.getElementById("right-panel-theme").textContent = panel.headline;
+        document.getElementById("right-panel-folder").textContent = `PASTA: ${panel.folder}`;
+
+        [0, 1, 2].forEach((i) => {
+          const navEl = document.getElementById(`nav-p${i}`);
+          const btnEl = document.getElementById(`btn-p${i}`);
+          const progEl = document.getElementById(`prog-${i}`);
+          if (navEl) navEl.classList.toggle("active", i === panelIdx);
+          if (btnEl) btnEl.classList.toggle("active", i === panelIdx);
+          if (progEl) progEl.classList.toggle("active", i === panelIdx);
+        });
+
+        document.querySelectorAll(".panel-dot").forEach((dot, i) => {
+          dot.classList.toggle("active", i === panelIdx);
+        });
+
+        const row = document.getElementById("speakers-row");
+        row.innerHTML = "";
+
+        panel.speakers.forEach((sp, idx) => {
+          const numStr = String(idx + 1).padStart(2, "0");
+          const card = document.createElement("div");
+          card.className = "speaker-card";
+          card.onclick = () => enterSpotlight(idx, true);
+
+          const topBar = document.createElement("div");
+          topBar.className = "card-top-bar";
+          topBar.innerHTML = `
+            <span class="card-index">${numStr}</span>
+            <span class="card-dots"><i></i><i></i></span>
+          `;
+
+          const img = document.createElement("img");
+          img.className = "portrait";
+          img.src = resolvePhoto(sp);
+          img.alt = sp.name;
+
+          const footer = document.createElement("div");
+          footer.className = "speaker-card-footer";
+          footer.innerHTML = `
+            <div class="sp-niche">${panel.headline}</div>
+            <div class="sp-name">${formatCardNameLines(sp.name)}</div>
+          `;
+
+          card.appendChild(topBar);
+          card.appendChild(img);
+          card.appendChild(footer);
+          row.appendChild(card);
+        });
+
+        updatePhotoCounter();
+      } catch (err) {
+        console.error("Erro ao renderizar painel:", err);
+      }
+    }
+
+    function runAutopilotTick() {
+      if (!autopilot) return;
+      if (autopilotStep === 0) {
+        exitSpotlight(false);
+        autopilotStep = 1;
+        autopilotTimer = setTimeout(runAutopilotTick, 7000);
+      } else if (autopilotStep >= 1 && autopilotStep <= 7) {
+        enterSpotlight(autopilotStep - 1, false);
+        autopilotStep++;
+        autopilotTimer = setTimeout(runAutopilotTick, 5500);
+      } else {
+        autopilotStep = 0;
+        const nextP = (currentPanelIdx + 1) % PANELS.length;
+        renderPanel(nextP);
+        runAutopilotTick();
+      }
+    }
+
+    function startAutopilot() {
+      autopilot = true;
+      document.getElementById("btn-autopilot").textContent = "Piloto Auto: ON";
+      document.getElementById("btn-autopilot").classList.add("active");
+      clearTimeout(autopilotTimer);
+      autopilotTimer = setTimeout(runAutopilotTick, 6500);
+    }
+
+    function toggleAutopilot() {
+      if (autopilot) stopAutopilot();
+      else {
+        autopilotStep = isFloating ? currentSpeakerIdx + 2 : 1;
+        startAutopilot();
+      }
+    }
+
+    function toggleGuides() {
+      const g = document.getElementById("zone-guides");
+      g.classList.toggle("visible");
+      document.getElementById("btn-guides").classList.toggle("active", g.classList.contains("visible"));
+    }
+
+    function blobToDataUrl(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    async function ingestUploadedFile(file) {
+      const lowerName = String(file.name || "").toLowerCase();
+      const isZip =
+        lowerName.endsWith(".zip") ||
+        file.type === "application/zip" ||
+        file.type === "application/x-zip-compressed";
+
+      if (isZip) {
+        if (!window.JSZip) {
+          throw new Error("Biblioteca JSZip não carregada.");
+        }
+        const zip = await window.JSZip.loadAsync(file);
+        const entries = Object.values(zip.files || {}).filter(
+          (entry) => !entry.dir && /\.(png|webp|jpg|jpeg)$/i.test(entry.name)
+        );
+        for (const entry of entries) {
+          const blob = await entry.async("blob");
+          const mime = entry.name.toLowerCase().endsWith(".webp") ? "image/webp" : "image/png";
+          const typedBlob = blob.type ? blob : new Blob([blob], { type: mime });
+          const dataUrl = await blobToDataUrl(typedBlob);
+          storePhotoByName(entry.name, dataUrl);
+        }
+        return;
+      }
+
+      const dataUrl = await blobToDataUrl(file);
+      storePhotoByName(file.name, dataUrl);
+    }
+
+    document.getElementById("file-loader-input").addEventListener("change", async (e) => {
+      try {
+        const files = Array.from(e.target.files || []);
+        if (!files.length) return;
+
+        for (const file of files) {
+          await ingestUploadedFile(file);
+        }
+        persistPhotosToStorage();
+
+        renderPanel(currentPanelIdx);
+        if (isFloating) {
+          enterSpotlight(currentSpeakerIdx, false);
+        }
+      } catch (err) {
+        console.error("Erro ao carregar arquivos PNG ou ZIP:", err);
+      } finally {
+        e.target.value = "";
+      }
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "1") selectPanel(0);
+      else if (e.key === "2") selectPanel(1);
+      else if (e.key === "3") selectPanel(2);
+      else if (e.key === "ArrowRight") nextSpotlight();
+      else if (e.key === "Escape") exitSpotlight(true);
+      else if (e.key === " ") {
+        e.preventDefault();
+        toggleAutopilot();
+      } else if (e.key.toLowerCase() === "g") {
+        toggleGuides();
+      } else if (e.key.toLowerCase() === "f") {
+        toggleFullscreen();
+      } else if (e.key.toLowerCase() === "h") {
+        document.getElementById("operator-dock").classList.toggle("hidden-dock");
+      }
+    });
+
+    const canvas = document.getElementById("waves-canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = 9152;
+    canvas.height = 2106;
+    let waveTime = 0;
+
+    function drawGoldenWaves() {
+      try {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        waveTime += 0.008;
+
+        const waveCount = 7;
+        for (let w = 0; w < waveCount; w++) {
+          ctx.beginPath();
+          const baseY = 680 + w * 185;
+          const amp = 140 + w * 22;
+          const freq = 0.00055 + w * 0.00008;
+          const phase = waveTime + w * 0.75;
+
+          ctx.moveTo(0, baseY);
+          for (let x = 0; x <= canvas.width; x += 64) {
+            const y =
+              baseY +
+              Math.sin(x * freq + phase) * amp +
+              Math.cos(x * freq * 0.5 - phase * 0.7) * (amp * 0.45);
+            ctx.lineTo(x, y);
+          }
+
+          const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
+          grad.addColorStop(0, "rgba(216, 175, 99, 0.03)");
+          grad.addColorStop(0.25, "rgba(216, 175, 99, 0.16)");
+          grad.addColorStop(0.5, "rgba(244, 220, 168, 0.28)");
+          grad.addColorStop(0.75, "rgba(216, 175, 99, 0.16)");
+          grad.addColorStop(1, "rgba(216, 175, 99, 0.03)");
+
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 3.5;
+          ctx.stroke();
+        }
+        requestAnimationFrame(drawGoldenWaves);
+      } catch (err) {
+        console.error("Erro na animação das ondas douradas:", err);
+      }
+    }
+
+    loadPhotosFromStorage();
+    hydrateExternalPhotos();
+    renderPanel(0);
+    drawGoldenWaves();
+
+    loadPhotosFromIndexedDb().then((loaded) => {
+      if (loaded) {
+        renderPanel(currentPanelIdx);
+        if (isFloating) {
+          enterSpotlight(currentSpeakerIdx, false);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
