@@ -1339,10 +1339,14 @@
   <script>
     const CUTOUT_PHOTOS = {};
     const WITH_BG_PHOTOS = {};
-    const STORAGE_KEY = "FORJA_SUMMIT_PHOTOS_V3";
-    const IDB_NAME = "FORJA_SUMMIT_DB_V3";
+    const NAME_MATCHED_PHOTOS = {};
+    const STORAGE_KEY = "FORJA_SUMMIT_PHOTOS_V5";
+    const IDB_NAME = "FORJA_SUMMIT_DB_V5";
     const IDB_STORE = "photos";
     let idbReady = null;
+    const REPO_BASE_URL = window.location.hostname.includes("github.io")
+      ? "."
+      : "https://paramovie.github.io/IMAGENS-PALESTRANTES-FORJA-SUMMIT";
 
     const PANELS = [
       {
@@ -1381,7 +1385,7 @@
         id: 3,
         code: "PAINEL 03",
         headline: "O Futuro das empresas - Reforma tributária, Empregabilidade e NR1",
-        folder: "O FUTURO DAS EMPRESAS RBG",
+        folder: "FUTURO DAS EMPRESAS RBG",
         stackedLabel: "PAINEL<br/>03<br/>FORJA",
         speakers: [
           { num: 15, file: "Elizângela_Santos-removebg-preview.png", name: "Elizângela Santos", backWord: "SANTOS" },
@@ -1394,29 +1398,12 @@
       }
     ];
 
-    function getActiveSpeakerNumbers() {
-      const nums = [];
-      PANELS.forEach((panel) => {
-        panel.speakers.forEach((sp) => {
-          if (typeof sp.num === "number") nums.push(sp.num);
-        });
+    function getAllActiveSpeakers() {
+      const list = [];
+      PANELS.forEach((p) => {
+        p.speakers.forEach((s) => list.push(s));
       });
-      return nums;
-    }
-
-    function extractSpeakerNumber(raw) {
-      const base = String(raw || "").split("/").pop().replace(/\.[^.]+$/, "");
-      const match = base.match(/(?:^|[^0-9])(0?[1-9]|1[0-9]|2[0-1])(?:$|[^0-9])/);
-      if (match && match[1]) {
-        const parsed = parseInt(match[1], 10);
-        if (parsed >= 1 && parsed <= 21) return parsed;
-      }
-      return null;
-    }
-
-    function isBackgroundVariant(filename) {
-      const lower = String(filename || "").toLowerCase();
-      return /(?:^|[-_.\s])(fundo|bg|com[-_]?fundo|original)(?:[-_.\s]|\.)/.test(lower);
+      return list;
     }
 
     function openPhotoDatabase() {
@@ -1449,7 +1436,7 @@
         if (!db) return;
         const tx = db.transaction(IDB_STORE, "readwrite");
         const store = tx.objectStore(IDB_STORE);
-        store.put(snapshot, "all_photos_v3");
+        store.put(snapshot, "all_photos");
       } catch (err) {
         console.warn("Aviso ao salvar no IndexedDB:", err);
       }
@@ -1462,20 +1449,13 @@
         return await new Promise((resolve) => {
           const tx = db.transaction(IDB_STORE, "readonly");
           const store = tx.objectStore(IDB_STORE);
-          const req = store.get("all_photos_v3");
+          const req = store.get("all_photos");
           req.onsuccess = () => {
             const data = req.result;
             if (data && typeof data === "object") {
-              if (data.cutouts && typeof data.cutouts === "object") {
-                Object.entries(data.cutouts).forEach(([k, v]) => {
-                  if (typeof v === "string" && v.length > 0) CUTOUT_PHOTOS[k] = v;
-                });
-              }
-              if (data.withBg && typeof data.withBg === "object") {
-                Object.entries(data.withBg).forEach(([k, v]) => {
-                  if (typeof v === "string" && v.length > 0) WITH_BG_PHOTOS[k] = v;
-                });
-              }
+              if (data.cutout) Object.assign(CUTOUT_PHOTOS, data.cutout);
+              if (data.withBg) Object.assign(WITH_BG_PHOTOS, data.withBg);
+              if (data.byName) Object.assign(NAME_MATCHED_PHOTOS, data.byName);
               resolve(true);
             } else {
               resolve(false);
@@ -1489,12 +1469,16 @@
     }
 
     function persistPhotosToStorage() {
-      const snapshot = { cutouts: { ...CUTOUT_PHOTOS }, withBg: { ...WITH_BG_PHOTOS } };
-      savePhotosToIndexedDb(snapshot);
+      const payload = {
+        cutout: { ...CUTOUT_PHOTOS },
+        withBg: { ...WITH_BG_PHOTOS },
+        byName: { ...NAME_MATCHED_PHOTOS }
+      };
+      savePhotosToIndexedDb(payload);
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
-      } catch (_) {
-        // IndexedDB mantém o armazenamento quando exceder localStorage
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      } catch (err) {
+        console.warn("Storage local atingiu limite; usando IndexedDB:", err);
       }
     }
 
@@ -1504,176 +1488,58 @@
         if (!raw) return;
         const parsed = JSON.parse(raw);
         if (parsed && typeof parsed === "object") {
-          if (parsed.cutouts && typeof parsed.cutouts === "object") {
-            Object.entries(parsed.cutouts).forEach(([k, v]) => {
-              if (typeof v === "string" && v.length > 0) CUTOUT_PHOTOS[k] = v;
-            });
-          }
-          if (parsed.withBg && typeof parsed.withBg === "object") {
-            Object.entries(parsed.withBg).forEach(([k, v]) => {
-              if (typeof v === "string" && v.length > 0) WITH_BG_PHOTOS[k] = v;
-            });
-          }
+          if (parsed.cutout) Object.assign(CUTOUT_PHOTOS, parsed.cutout);
+          if (parsed.withBg) Object.assign(WITH_BG_PHOTOS, parsed.withBg);
+          if (parsed.byName) Object.assign(NAME_MATCHED_PHOTOS, parsed.byName);
         }
       } catch (err) {
         console.warn("Erro ao restaurar fotos salvas:", err);
       }
     }
 
+    function normalizeKey(raw) {
+      return String(raw || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\.(png|jpg|jpeg|webp)$/i, "")
+        .replace(/[-_]?removebg[-_]?preview/gi, "")
+        .replace(/\d+$/g, "")
+        .replace(/^dra?[._\s]+/i, "")
+        .replace(/[^a-zA-Z0-9]+/g, "")
+        .toLowerCase()
+        .trim();
+    }
+
+    function extractSpeakerNumber(filename) {
+      const base = String(filename || "").split("/").pop();
+      const match = base.match(/(?:^|\D)(\d{1,2})(?:\D|$)/);
+      if (!match) return null;
+      const n = parseInt(match[1], 10);
+      return n >= 1 && n <= 23 ? n : null;
+    }
+
+    function isBackgroundVariant(filename) {
+      const lower = String(filename || "").toLowerCase();
+      return /fundo|bg|original|com[_-]?fundo/i.test(lower);
+    }
+
     function storePhotoByName(filename, dataUrl) {
+      const baseName = String(filename || "").split("/").pop();
+      const norm = normalizeKey(baseName);
+      if (norm) {
+        NAME_MATCHED_PHOTOS[norm] = dataUrl;
+      }
+      NAME_MATCHED_PHOTOS[baseName] = dataUrl;
+
       const num = extractSpeakerNumber(filename);
-      if (!num) return;
-      const padded = String(num).padStart(2, "0");
-
-      if (isBackgroundVariant(filename)) {
-        WITH_BG_PHOTOS[padded] = dataUrl;
-      } else {
-        CUTOUT_PHOTOS[padded] = dataUrl;
-      }
-    }
-
-    function getCandidateCutoutUrls(num) {
-      const padded = String(num).padStart(2, "0");
-      const unpadded = String(num);
-      const bases = padded === unpadded ? [padded] : [padded, unpadded];
-      const exts = ["png", "jpg", "jpeg", "webp"];
-      const urls = [];
-      bases.forEach((b) => {
-        exts.forEach((ext) => {
-          urls.push(`./${b}.${ext}`);
-        });
-      });
-      return urls;
-    }
-
-    function getCandidateBgUrls(num) {
-      const padded = String(num).padStart(2, "0");
-      const unpadded = String(num);
-      const suffixes = ["-fundo", "_fundo", " fundo", "-bg", "_bg"];
-      const exts = ["png", "jpg", "jpeg", "webp"];
-      const urls = [];
-      [padded, unpadded].forEach((b) => {
-        suffixes.forEach((suf) => {
-          exts.forEach((ext) => {
-            urls.push(`./${b}${suf}.${ext}`);
-          });
-        });
-      });
-      return urls;
-    }
-
-    function hydrateRepositoryPaths() {
-      const activeNums = getActiveSpeakerNumbers();
-      activeNums.forEach((n) => {
-        const padded = String(n).padStart(2, "0");
-        if (!CUTOUT_PHOTOS[padded]) {
-          CUTOUT_PHOTOS[padded] = `./${padded}.png`;
-        }
-        if (!WITH_BG_PHOTOS[padded]) {
-          WITH_BG_PHOTOS[padded] = `./${padded}-fundo.png`;
-        }
-      });
-      probeRepositoryImages();
-    }
-
-    function probeSingleCandidate(url) {
-      return new Promise((resolve) => {
-        if (!url || url.startsWith("data:")) {
-          resolve(Boolean(url));
-          return;
-        }
-        const probe = new Image();
-        probe.onload = () => resolve(true);
-        probe.onerror = () => resolve(false);
-        probe.src = url;
-      });
-    }
-
-    async function probeRepositoryImages() {
-      let changed = false;
-      const activeNums = getActiveSpeakerNumbers();
-      for (const n of activeNums) {
-        const padded = String(n).padStart(2, "0");
-        const currentCutout = CUTOUT_PHOTOS[padded] || "";
-        if (!currentCutout.startsWith("data:")) {
-          const candidates = getCandidateCutoutUrls(n);
-          for (const candidate of candidates) {
-            const ok = await probeSingleCandidate(candidate);
-            if (ok) {
-              if (CUTOUT_PHOTOS[padded] !== candidate) {
-                CUTOUT_PHOTOS[padded] = candidate;
-                changed = true;
-              }
-              break;
-            }
-          }
-        }
-
-        const currentBg = WITH_BG_PHOTOS[padded] || "";
-        if (!currentBg.startsWith("data:")) {
-          const bgCandidates = getCandidateBgUrls(n);
-          for (const bgCand of bgCandidates) {
-            const okBg = await probeSingleCandidate(bgCand);
-            if (okBg) {
-              if (WITH_BG_PHOTOS[padded] !== bgCand) {
-                WITH_BG_PHOTOS[padded] = bgCand;
-                changed = true;
-              }
-              break;
-            }
-          }
+      if (num) {
+        const padded = String(num).padStart(2, "0");
+        if (isBackgroundVariant(filename)) {
+          WITH_BG_PHOTOS[padded] = dataUrl;
+        } else {
+          CUTOUT_PHOTOS[padded] = dataUrl;
         }
       }
-      if (changed) {
-        renderPanel(currentPanelIdx);
-        if (isFloating) {
-          enterSpotlight(currentSpeakerIdx, false);
-        }
-      }
-      updatePhotoCounter();
-    }
-
-    function createGroupThumbnailArtwork(speaker, panelHeadline) {
-      const numStr = String(speaker.num).padStart(2, "0");
-      const cleaned = String(speaker.name || "FS").replace(/^(dra?\.?\s+)/i, "").trim();
-      const initials = cleaned
-        .split(/\s+/)
-        .map((p) => p[0] || "")
-        .slice(0, 2)
-        .join("")
-        .toUpperCase();
-
-      const cutoutSrc = CUTOUT_PHOTOS[numStr] || "";
-      const safeCutout = cutoutSrc.startsWith("data:image") ? cutoutSrc : "";
-
-      const svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="900" height="1400" viewBox="0 0 900 1400">
-          <defs>
-            <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#2c1d0c"/>
-              <stop offset="42%" stop-color="#171007"/>
-              <stop offset="100%" stop-color="#070503"/>
-            </linearGradient>
-            <radialGradient id="spotGlow" cx="50%" cy="36%" r="55%">
-              <stop offset="0%" stop-color="#f4dca8" stop-opacity="0.34"/>
-              <stop offset="55%" stop-color="#d8af63" stop-opacity="0.11"/>
-              <stop offset="100%" stop-color="#080604" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-          <rect width="900" height="1400" fill="url(#bgGrad)"/>
-          <circle cx="450" cy="490" r="390" fill="url(#spotGlow)"/>
-          <circle cx="450" cy="490" r="340" fill="none" stroke="#d8af63" stroke-opacity="0.22" stroke-width="2" stroke-dasharray="12 12"/>
-          ${
-            safeCutout
-              ? `<image href="${safeCutout}" x="45" y="130" width="810" height="1060" preserveAspectRatio="xMidYMin slice"/>`
-              : `<text x="450" y="540" text-anchor="middle" fill="#d8af63" fill-opacity="0.45"
-                   font-family="Cinzel, serif" font-size="160" font-weight="700">${initials}</text>`
-          }
-          <rect x="0" y="960" width="900" height="440" fill="#080604" fill-opacity="0.45"/>
-          <text x="450" y="1020" text-anchor="middle" fill="#d8af63" fill-opacity="0.55"
-                font-family="Plus Jakarta Sans, sans-serif" font-size="24" font-weight="700" letter-spacing="6">${String(panelHeadline || "").toUpperCase()}</text>
-        </svg>`;
-      return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
     }
 
     function createCutoutPlaceholder(name) {
@@ -1706,38 +1572,159 @@
       return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
     }
 
-    function getCutoutUrl(speaker) {
-      const padded = String(speaker.num).padStart(2, "0");
-      const val = CUTOUT_PHOTOS[padded];
-      if (!val || val.startsWith("data:image/svg+xml")) {
-        return createCutoutPlaceholder(speaker.name);
+    function getCandidateCutoutUrls(speaker) {
+      const num = speaker.num;
+      const padded = String(num).padStart(2, "0");
+      const unpadded = String(num);
+      const bases = padded === unpadded ? [padded] : [padded, unpadded];
+      const exts = ["png", "jpg", "jpeg", "webp"];
+      const urls = [];
+      if (speaker.file) {
+        urls.push(`${REPO_BASE_URL}/${encodeURIComponent(speaker.file)}`);
+        urls.push(`${REPO_BASE_URL}/${speaker.file}`);
       }
-      return val;
+      bases.forEach((b) => {
+        exts.forEach((ext) => {
+          urls.push(`${REPO_BASE_URL}/${b}.${ext}`);
+        });
+      });
+      return [...new Set(urls)];
     }
 
-    function getGroupThumbnailUrl(speaker, panelHeadline) {
+    function getCandidateBgUrls(speaker) {
+      const num = speaker.num;
+      const padded = String(num).padStart(2, "0");
+      const unpadded = String(num);
+      const suffixes = ["-fundo", "_fundo", " fundo", "-bg", "_bg"];
+      const exts = ["png", "jpg", "jpeg", "webp"];
+      const urls = [];
+      [padded, unpadded].forEach((b) => {
+        suffixes.forEach((suf) => {
+          exts.forEach((ext) => {
+            urls.push(`${REPO_BASE_URL}/${b}${suf}.${ext}`);
+          });
+        });
+      });
+      return [...new Set(urls)];
+    }
+
+    function hydrateRepositoryPaths() {
+      PANELS.forEach((panel) => {
+        panel.speakers.forEach((sp) => {
+          const padded = String(sp.num).padStart(2, "0");
+          if (!CUTOUT_PHOTOS[padded]) {
+            CUTOUT_PHOTOS[padded] = sp.file
+              ? `${REPO_BASE_URL}/${encodeURIComponent(sp.file)}`
+              : `${REPO_BASE_URL}/${padded}.png`;
+          }
+          if (!WITH_BG_PHOTOS[padded]) {
+            WITH_BG_PHOTOS[padded] = "";
+          }
+        });
+      });
+      probeRepositoryImages();
+    }
+
+    function probeSingleCandidate(url) {
+      return new Promise((resolve) => {
+        if (!url || url.startsWith("data:")) {
+          resolve(Boolean(url));
+          return;
+        }
+        const probe = new Image();
+        probe.onload = () => resolve(true);
+        probe.onerror = () => resolve(false);
+        probe.src = url;
+      });
+    }
+
+    async function probeRepositoryImages() {
+      let changed = false;
+      for (const panel of PANELS) {
+        for (const sp of panel.speakers) {
+          const padded = String(sp.num).padStart(2, "0");
+          const currentCutout = CUTOUT_PHOTOS[padded] || "";
+          if (!currentCutout.startsWith("data:")) {
+            const candidates = getCandidateCutoutUrls(sp);
+            let foundCutout = "";
+            for (const candidate of candidates) {
+              const ok = await probeSingleCandidate(candidate);
+              if (ok) {
+                foundCutout = candidate;
+                break;
+              }
+            }
+            if (CUTOUT_PHOTOS[padded] !== foundCutout) {
+              CUTOUT_PHOTOS[padded] = foundCutout;
+              changed = true;
+            }
+          }
+
+          const currentBg = WITH_BG_PHOTOS[padded] || "";
+          if (!currentBg.startsWith("data:")) {
+            const bgCandidates = getCandidateBgUrls(sp);
+            let foundBg = "";
+            for (const bgCand of bgCandidates) {
+              const okBg = await probeSingleCandidate(bgCand);
+              if (okBg) {
+                foundBg = bgCand;
+                break;
+              }
+            }
+            if (WITH_BG_PHOTOS[padded] !== foundBg) {
+              WITH_BG_PHOTOS[padded] = foundBg;
+              changed = true;
+            }
+          }
+        }
+      }
+      if (changed) {
+        renderPanel(currentPanelIdx);
+        if (isFloating) {
+          enterSpotlight(currentSpeakerIdx, false);
+        }
+      }
+      updatePhotoCounter();
+    }
+
+    function findMatchedCutoutForSpeaker(speaker) {
+      if (!speaker) return null;
+      const padded = String(speaker.num).padStart(2, "0");
+      if (CUTOUT_PHOTOS[padded] && !CUTOUT_PHOTOS[padded].startsWith("data:image/svg+xml")) {
+        return CUTOUT_PHOTOS[padded];
+      }
+      if (speaker.file && NAME_MATCHED_PHOTOS[speaker.file]) {
+        return NAME_MATCHED_PHOTOS[speaker.file];
+      }
+      const normName = normalizeKey(speaker.name);
+      if (normName && NAME_MATCHED_PHOTOS[normName]) {
+        return NAME_MATCHED_PHOTOS[normName];
+      }
+      return null;
+    }
+
+    function getCutoutUrl(speaker) {
+      return findMatchedCutoutForSpeaker(speaker) || createCutoutPlaceholder(speaker.name);
+    }
+
+    function getGroupThumbnailUrl(speaker) {
       const padded = String(speaker.num).padStart(2, "0");
       const bgVal = WITH_BG_PHOTOS[padded];
       if (bgVal && !bgVal.startsWith("data:image/svg+xml")) {
         return bgVal;
       }
-      return createGroupThumbnailArtwork(speaker, panelHeadline);
+      return getCutoutUrl(speaker);
     }
 
     function updatePhotoCounter() {
-      const activeNums = getActiveSpeakerNumbers();
+      const speakers = getAllActiveSpeakers();
       let count = 0;
-      activeNums.forEach((n) => {
-        const padded = String(n).padStart(2, "0");
-        const val = CUTOUT_PHOTOS[padded] || "";
-        if (val.startsWith("data:image/") && !val.startsWith("data:image/svg+xml")) {
-          count++;
-        } else if (val.startsWith("./")) {
-          count++;
-        }
+      speakers.forEach((sp) => {
+        const matched = findMatchedCutoutForSpeaker(sp);
+        if (matched) count++;
       });
       const el = document.getElementById("photo-counter");
-      if (el) el.textContent = `${count}/${activeNums.length} PNGs`;
+      if (el) el.textContent = `${count}/${speakers.length} PNGs`;
     }
 
     const stageEl = document.getElementById("stage");
@@ -1868,8 +1855,9 @@
           firstName.length <= 9 ? firstName : (sp.backWord || firstName);
         document.getElementById("spot-mid-connector").textContent = "em destaque";
 
-        const spotBgLayer = document.getElementById("spotlight-bg-layer");
-        spotBgLayer.src = getGroupThumbnailUrl(sp, panel.headline);
+        const bgLayer = document.getElementById("spotlight-bg-layer");
+        bgLayer.src = getGroupThumbnailUrl(sp);
+        bgLayer.alt = "";
 
         const spotImg = document.getElementById("spotlight-img");
         spotImg.src = getCutoutUrl(sp);
@@ -1884,9 +1872,7 @@
         stageEl.classList.remove("is-floating");
         void stageEl.offsetWidth;
         requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            stageEl.classList.add("is-floating");
-          });
+          stageEl.classList.add("is-floating");
         });
 
         document.getElementById("btn-mode-group").classList.remove("active");
@@ -1911,11 +1897,11 @@
 
     function nextSpotlight() {
       stopAutopilot();
-      const totalInPanel = PANELS[currentPanelIdx].speakers.length;
+      const total = PANELS[currentPanelIdx].speakers.length;
       if (!isFloating) {
         enterSpotlight(0, false);
       } else {
-        const nextIdx = (currentSpeakerIdx + 1) % totalInPanel;
+        const nextIdx = (currentSpeakerIdx + 1) % total;
         enterSpotlight(nextIdx, false);
       }
     }
@@ -1932,17 +1918,16 @@
       try {
         currentPanelIdx = panelIdx;
         const panel = PANELS[panelIdx];
-        const speakerCount = panel.speakers.length;
-        const countLabel = String(speakerCount).padStart(2, "0");
+        const count = panel.speakers.length;
+        const countPadded = String(count).padStart(2, "0");
 
         document.getElementById("group-panel-kicker").textContent = `${panel.code} // SESSÃO EDITORIAL`;
-        document.getElementById("group-panel-count").textContent = `${countLabel} PALESTRANTES`;
-        const groupBtn = document.getElementById("btn-mode-group");
-        if (groupBtn) groupBtn.textContent = `Visão Grupo (${speakerCount})`;
+        document.getElementById("group-panel-count").textContent = `${countPadded} PALESTRANTES`;
+        document.getElementById("btn-mode-group").textContent = `Visão Grupo (${count})`;
 
         const titleEl = document.getElementById("group-panel-title");
         titleEl.textContent = panel.headline;
-        titleEl.classList.toggle("headline-compact", panel.headline.length > 26);
+        titleEl.classList.toggle("headline-compact", panel.headline.length > 34);
 
         document.getElementById("right-panel-tag").textContent = `PAINEL ATIVO • 0${panel.id} / 03`;
         document.getElementById("right-panel-theme").textContent = panel.headline;
@@ -1962,7 +1947,7 @@
         });
 
         const row = document.getElementById("speakers-row");
-        row.style.gridTemplateColumns = `repeat(${speakerCount}, 1fr)`;
+        row.style.gridTemplateColumns = `repeat(${count}, 1fr)`;
         row.innerHTML = "";
 
         panel.speakers.forEach((sp, idx) => {
@@ -1980,12 +1965,8 @@
 
           const img = document.createElement("img");
           img.className = "portrait";
-          img.src = getGroupThumbnailUrl(sp, panel.headline);
+          img.src = getGroupThumbnailUrl(sp);
           img.alt = sp.name;
-          img.onerror = () => {
-            img.onerror = null;
-            img.src = createGroupThumbnailArtwork(sp, panel.headline);
-          };
 
           const footer = document.createElement("div");
           footer.className = "speaker-card-footer";
@@ -2008,15 +1989,15 @@
 
     function runAutopilotTick() {
       if (!autopilot) return;
-      const totalInPanel = PANELS[currentPanelIdx].speakers.length;
+      const total = PANELS[currentPanelIdx].speakers.length;
       if (autopilotStep === 0) {
         exitSpotlight(false);
         autopilotStep = 1;
         autopilotTimer = setTimeout(runAutopilotTick, 7000);
-      } else if (autopilotStep >= 1 && autopilotStep <= totalInPanel) {
+      } else if (autopilotStep >= 1 && autopilotStep <= total) {
         enterSpotlight(autopilotStep - 1, false);
         autopilotStep++;
-        autopilotTimer = setTimeout(runAutopilotTick, 5500);
+        autopilotTimer = setTimeout(runAutopilotTick, 6200);
       } else {
         autopilotStep = 0;
         const nextP = (currentPanelIdx + 1) % PANELS.length;
