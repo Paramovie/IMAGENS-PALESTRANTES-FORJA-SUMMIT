@@ -624,16 +624,19 @@
 
     .speaker-card img.portrait {
       position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
+      bottom: 130px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 112%;
+      height: 1210px;
       object-fit: cover;
       object-position: top center;
       z-index: 3;
-      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), filter 0.4s ease;
+      filter: drop-shadow(0 20px 36px rgba(0, 0, 0, 0.85));
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .speaker-card:hover img.portrait {
-      transform: scale(1.045);
+      transform: translateX(-50%) scale(1.045);
     }
 
     .speaker-card-footer {
@@ -723,19 +726,6 @@
         opacity: 1;
         filter: blur(0px);
         transform: translateX(-50%) translateY(0px) scale(1);
-      }
-    }
-
-    @keyframes spotBgDissolveOut {
-      0% {
-        opacity: 0.92;
-        filter: blur(0px) brightness(0.96);
-        transform: translate(-50%, 10%) scale(1.01);
-      }
-      100% {
-        opacity: 0;
-        filter: blur(16px) brightness(1.18);
-        transform: translate(-50%, -4%) scale(1.08);
       }
     }
 
@@ -922,25 +912,6 @@
       pointer-events: none;
     }
 
-    #spotlight-bg-layer {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      height: 118%;
-      width: auto;
-      max-width: none;
-      object-fit: cover;
-      object-position: top center;
-      transform: translate(-50%, 10%) scale(1.01);
-      opacity: 0;
-      border-radius: 36px;
-      pointer-events: none;
-      z-index: 1;
-    }
-    #stage.is-floating #spotlight-bg-layer {
-      animation: spotBgDissolveOut 1.35s cubic-bezier(0.22, 1, 0.36, 1) 1.4s forwards;
-    }
-
     #spotlight-img {
       position: relative;
       z-index: 2;
@@ -953,7 +924,7 @@
       opacity: 0;
     }
     #stage.is-floating #spotlight-img {
-      animation: spotCutoutRiseIn 1.45s cubic-bezier(0.22, 1, 0.36, 1) 1.55s forwards;
+      animation: spotCutoutRiseIn 1.45s cubic-bezier(0.22, 1, 0.36, 1) 1.45s forwards;
     }
 
     .spotlight-front-pill-group {
@@ -968,7 +939,7 @@
       opacity: 0;
     }
     #stage.is-floating .spotlight-front-pill-group {
-      animation: spotFadeSettleHorizontal 1.15s cubic-bezier(0.22, 1, 0.36, 1) 1.95s forwards;
+      animation: spotFadeSettleHorizontal 1.15s cubic-bezier(0.22, 1, 0.36, 1) 1.85s forwards;
     }
 
     .spotlight-kicker-spaced {
@@ -1024,7 +995,7 @@
       opacity: 0;
     }
     #stage.is-floating .spotlight-front-left {
-      animation: spotFadeSettle 1.2s cubic-bezier(0.22, 1, 0.36, 1) 2.2s forwards;
+      animation: spotFadeSettle 1.2s cubic-bezier(0.22, 1, 0.36, 1) 2.1s forwards;
     }
 
     .spotlight-panel-stacked {
@@ -1070,7 +1041,7 @@
       opacity: 0;
     }
     #stage.is-floating .spotlight-front-right-bottom {
-      animation: spotFadeSettle 1.15s cubic-bezier(0.22, 1, 0.36, 1) 2.45s forwards;
+      animation: spotFadeSettle 1.15s cubic-bezier(0.22, 1, 0.36, 1) 2.35s forwards;
     }
     .spotlight-front-right-bottom .monogram {
       font-family: var(--font-display);
@@ -1254,7 +1225,6 @@
           <div class="spotlight-mid-connector" id="spot-mid-connector">em destaque</div>
 
           <div class="spotlight-portrait-wrap">
-            <img id="spotlight-bg-layer" src="" alt="" aria-hidden="true" />
             <img id="spotlight-img" src="" alt="Palestrante em Destaque" />
           </div>
 
@@ -1340,8 +1310,8 @@
     const CUTOUT_PHOTOS = {};
     const WITH_BG_PHOTOS = {};
     const NAME_MATCHED_PHOTOS = {};
-    const STORAGE_KEY = "FORJA_SUMMIT_PHOTOS_V5";
-    const IDB_NAME = "FORJA_SUMMIT_DB_V5";
+    const STORAGE_KEY = "FORJA_SUMMIT_PHOTOS_V7";
+    const IDB_NAME = "FORJA_SUMMIT_DB_V7";
     const IDB_STORE = "photos";
     let idbReady = null;
     const REPO_BASE_URL = window.location.hostname.includes("github.io")
@@ -1385,7 +1355,7 @@
         id: 3,
         code: "PAINEL 03",
         headline: "O Futuro das empresas - Reforma tributária, Empregabilidade e NR1",
-        folder: "FUTURO DAS EMPRESAS RBG",
+        folder: "O FUTURO DAS EMPRESAS RBG",
         stackedLabel: "PAINEL<br/>03<br/>FORJA",
         speakers: [
           { num: 15, file: "Elizângela_Santos-removebg-preview.png", name: "Elizângela Santos", backWord: "SANTOS" },
@@ -1399,11 +1369,7 @@
     ];
 
     function getAllActiveSpeakers() {
-      const list = [];
-      PANELS.forEach((p) => {
-        p.speakers.forEach((s) => list.push(s));
-      });
-      return list;
+      return PANELS.flatMap((p) => p.speakers);
     }
 
     function openPhotoDatabase() {
@@ -1511,16 +1477,11 @@
     }
 
     function extractSpeakerNumber(filename) {
-      const base = String(filename || "").split("/").pop();
-      const match = base.match(/(?:^|\D)(\d{1,2})(?:\D|$)/);
+      const baseName = String(filename || "").split("/").pop();
+      const match = baseName.match(/^0?(\d{1,2})(?:[-_.\s]|$)/);
       if (!match) return null;
-      const n = parseInt(match[1], 10);
-      return n >= 1 && n <= 23 ? n : null;
-    }
-
-    function isBackgroundVariant(filename) {
-      const lower = String(filename || "").toLowerCase();
-      return /fundo|bg|original|com[_-]?fundo/i.test(lower);
+      const num = parseInt(match[1], 10);
+      return num >= 1 && num <= 23 ? num : null;
     }
 
     function storePhotoByName(filename, dataUrl) {
@@ -1534,103 +1495,55 @@
       const num = extractSpeakerNumber(filename);
       if (num) {
         const padded = String(num).padStart(2, "0");
-        if (isBackgroundVariant(filename)) {
+        if (/fundo|bg/i.test(baseName)) {
           WITH_BG_PHOTOS[padded] = dataUrl;
         } else {
           CUTOUT_PHOTOS[padded] = dataUrl;
+          if (!WITH_BG_PHOTOS[padded]) {
+            WITH_BG_PHOTOS[padded] = dataUrl;
+          }
         }
       }
     }
 
-    function createCutoutPlaceholder(name) {
-      const cleaned = String(name || "FS").replace(/^(dra?\.?\s+)/i, "").trim();
-      const initials = cleaned
-        .split(/\s+/)
-        .map((p) => p[0] || "")
-        .slice(0, 2)
-        .join("")
-        .toUpperCase();
-
-      const svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="900" height="1400" viewBox="0 0 900 1400">
-          <defs>
-            <linearGradient id="sil" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#3a2a14"/>
-              <stop offset="55%" stop-color="#1c140a"/>
-              <stop offset="100%" stop-color="#0b0804"/>
-            </linearGradient>
-            <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#f4dca8" stop-opacity="0.85"/>
-              <stop offset="100%" stop-color="#d8af63" stop-opacity="0.15"/>
-            </linearGradient>
-          </defs>
-          <path d="M450 180 C555 180 630 265 630 375 C630 475 565 555 495 575 L495 620 C675 655 795 795 825 1400 L75 1400 C105 795 225 655 405 620 L405 575 C335 555 270 475 270 375 C270 265 345 180 450 180 Z"
-                fill="url(#sil)" stroke="url(#rim)" stroke-width="5"/>
-          <text x="450" y="960" text-anchor="middle" fill="#d8af63" fill-opacity="0.62"
-                font-family="Cinzel, serif" font-size="112" font-weight="700" letter-spacing="8">${initials}</text>
-        </svg>`;
-      return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
-    }
-
     function getCandidateCutoutUrls(speaker) {
-      const num = speaker.num;
-      const padded = String(num).padStart(2, "0");
-      const unpadded = String(num);
-      const bases = padded === unpadded ? [padded] : [padded, unpadded];
-      const exts = ["png", "jpg", "jpeg", "webp"];
-      const urls = [];
-      if (speaker.file) {
-        urls.push(`${REPO_BASE_URL}/${encodeURIComponent(speaker.file)}`);
-        urls.push(`${REPO_BASE_URL}/${speaker.file}`);
+      const list = [];
+      if (speaker && speaker.file) {
+        list.push(`${REPO_BASE_URL}/${encodeURIComponent(speaker.file)}`);
       }
-      bases.forEach((b) => {
-        exts.forEach((ext) => {
-          urls.push(`${REPO_BASE_URL}/${b}.${ext}`);
-        });
-      });
-      return [...new Set(urls)];
+      if (speaker && speaker.num) {
+        const plain = String(speaker.num);
+        const padded = plain.padStart(2, "0");
+        list.push(
+          `${REPO_BASE_URL}/${plain}-recorte.png`,
+          `${REPO_BASE_URL}/${padded}-recorte.png`,
+          `${REPO_BASE_URL}/${padded}.png`,
+          `${REPO_BASE_URL}/${plain}.png`,
+          `${REPO_BASE_URL}/${padded}.webp`,
+          `${REPO_BASE_URL}/${plain}.webp`
+        );
+      }
+      return list;
     }
 
     function getCandidateBgUrls(speaker) {
-      const num = speaker.num;
-      const padded = String(num).padStart(2, "0");
-      const unpadded = String(num);
-      const suffixes = ["-fundo", "_fundo", " fundo", "-bg", "_bg"];
-      const exts = ["png", "jpg", "jpeg", "webp"];
-      const urls = [];
-      [padded, unpadded].forEach((b) => {
-        suffixes.forEach((suf) => {
-          exts.forEach((ext) => {
-            urls.push(`${REPO_BASE_URL}/${b}${suf}.${ext}`);
-          });
-        });
-      });
-      return [...new Set(urls)];
-    }
-
-    function hydrateRepositoryPaths() {
-      PANELS.forEach((panel) => {
-        panel.speakers.forEach((sp) => {
-          const padded = String(sp.num).padStart(2, "0");
-          if (!CUTOUT_PHOTOS[padded]) {
-            CUTOUT_PHOTOS[padded] = sp.file
-              ? `${REPO_BASE_URL}/${encodeURIComponent(sp.file)}`
-              : `${REPO_BASE_URL}/${padded}.png`;
-          }
-          if (!WITH_BG_PHOTOS[padded]) {
-            WITH_BG_PHOTOS[padded] = "";
-          }
-        });
-      });
-      probeRepositoryImages();
+      if (!speaker || !speaker.num) return [];
+      const plain = String(speaker.num);
+      const padded = plain.padStart(2, "0");
+      return [
+        `${REPO_BASE_URL}/${plain}.png`,
+        `${REPO_BASE_URL}/${padded}.png`,
+        `${REPO_BASE_URL}/${plain}-fundo.png`,
+        `${REPO_BASE_URL}/${padded}-fundo.png`,
+        `${REPO_BASE_URL}/${plain}.jpg`,
+        `${REPO_BASE_URL}/${padded}.jpg`,
+        `${REPO_BASE_URL}/${plain}.webp`,
+        `${REPO_BASE_URL}/${padded}.webp`
+      ];
     }
 
     function probeSingleCandidate(url) {
       return new Promise((resolve) => {
-        if (!url || url.startsWith("data:")) {
-          resolve(Boolean(url));
-          return;
-        }
         const probe = new Image();
         probe.onload = () => resolve(true);
         probe.onerror = () => resolve(false);
@@ -1664,10 +1577,10 @@
           if (!currentBg.startsWith("data:")) {
             const bgCandidates = getCandidateBgUrls(sp);
             let foundBg = "";
-            for (const bgCand of bgCandidates) {
-              const okBg = await probeSingleCandidate(bgCand);
-              if (okBg) {
-                foundBg = bgCand;
+            for (const candidate of bgCandidates) {
+              const ok = await probeSingleCandidate(candidate);
+              if (ok) {
+                foundBg = candidate;
                 break;
               }
             }
@@ -1687,18 +1600,48 @@
       updatePhotoCounter();
     }
 
+    function createCutoutPlaceholder(name) {
+      const cleaned = String(name || "FS").replace(/^(dra?\.?\s+)/i, "").trim();
+      const initials = cleaned
+        .split(/\s+/)
+        .map((p) => p[0] || "")
+        .slice(0, 2)
+        .join("")
+        .toUpperCase();
+
+      const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="900" height="1400" viewBox="0 0 900 1400">
+          <defs>
+            <linearGradient id="sil" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3a2a14"/>
+              <stop offset="55%" stop-color="#1c140a"/>
+              <stop offset="100%" stop-color="#0b0804"/>
+            </linearGradient>
+            <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#f4dca8" stop-opacity="0.85"/>
+              <stop offset="100%" stop-color="#d8af63" stop-opacity="0.15"/>
+            </linearGradient>
+          </defs>
+          <path d="M450 180 C555 180 630 265 630 375 C630 475 565 555 495 575 L495 620 C675 655 795 795 825 1400 L75 1400 C105 795 225 655 405 620 L405 575 C335 555 270 475 270 375 C270 265 345 180 450 180 Z"
+                fill="url(#sil)" stroke="url(#rim)" stroke-width="5"/>
+          <text x="450" y="960" text-anchor="middle" fill="#d8af63" fill-opacity="0.62"
+                font-family="Cinzel, serif" font-size="112" font-weight="700" letter-spacing="8">${initials}</text>
+        </svg>`;
+      return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+    }
+
     function findMatchedCutoutForSpeaker(speaker) {
       if (!speaker) return null;
-      const padded = String(speaker.num).padStart(2, "0");
-      if (CUTOUT_PHOTOS[padded] && !CUTOUT_PHOTOS[padded].startsWith("data:image/svg+xml")) {
-        return CUTOUT_PHOTOS[padded];
-      }
       if (speaker.file && NAME_MATCHED_PHOTOS[speaker.file]) {
         return NAME_MATCHED_PHOTOS[speaker.file];
       }
       const normName = normalizeKey(speaker.name);
       if (normName && NAME_MATCHED_PHOTOS[normName]) {
         return NAME_MATCHED_PHOTOS[normName];
+      }
+      const padded = String(speaker.num).padStart(2, "0");
+      if (CUTOUT_PHOTOS[padded] && !CUTOUT_PHOTOS[padded].startsWith("data:image/svg+xml")) {
+        return CUTOUT_PHOTOS[padded];
       }
       return null;
     }
@@ -1720,8 +1663,7 @@
       const speakers = getAllActiveSpeakers();
       let count = 0;
       speakers.forEach((sp) => {
-        const matched = findMatchedCutoutForSpeaker(sp);
-        if (matched) count++;
+        if (findMatchedCutoutForSpeaker(sp)) count++;
       });
       const el = document.getElementById("photo-counter");
       if (el) el.textContent = `${count}/${speakers.length} PNGs`;
@@ -1749,8 +1691,9 @@
     function fitStage() {
       try {
         if (!stageEl) return;
-        const vw = window.innerWidth;
-        const vh = window.innerHeight;
+        const rect = viewportEl ? viewportEl.getBoundingClientRect() : null;
+        const vw = rect && rect.width > 0 ? rect.width : window.innerWidth;
+        const vh = rect && rect.height > 0 ? rect.height : window.innerHeight;
         const scale = Math.min(vw / STAGE_WIDTH, vh / STAGE_HEIGHT);
         stageEl.style.transform = `scale(${scale})`;
       } catch (err) {
@@ -1805,6 +1748,9 @@
 
     document.addEventListener("fullscreenchange", updateFullscreenButton);
     window.addEventListener("resize", fitStage);
+    if (typeof ResizeObserver !== "undefined" && viewportEl) {
+      new ResizeObserver(fitStage).observe(viewportEl);
+    }
     fitStage();
 
     let currentPanelIdx = 0;
@@ -1838,9 +1784,9 @@
     function enterSpotlight(speakerIdx, manual = false) {
       try {
         if (manual) stopAutopilot();
+        isFloating = true;
         const panel = PANELS[currentPanelIdx];
         const safeIdx = Math.max(0, Math.min(speakerIdx, panel.speakers.length - 1));
-        isFloating = true;
         currentSpeakerIdx = safeIdx;
 
         const sp = panel.speakers[safeIdx];
@@ -1854,10 +1800,6 @@
         document.getElementById("spot-back-word").textContent =
           firstName.length <= 9 ? firstName : (sp.backWord || firstName);
         document.getElementById("spot-mid-connector").textContent = "em destaque";
-
-        const bgLayer = document.getElementById("spotlight-bg-layer");
-        bgLayer.src = getGroupThumbnailUrl(sp);
-        bgLayer.alt = "";
 
         const spotImg = document.getElementById("spotlight-img");
         spotImg.src = getCutoutUrl(sp);
@@ -1918,16 +1860,16 @@
       try {
         currentPanelIdx = panelIdx;
         const panel = PANELS[panelIdx];
-        const count = panel.speakers.length;
-        const countPadded = String(count).padStart(2, "0");
+        const speakerCount = panel.speakers.length;
+        const countLabel = String(speakerCount).padStart(2, "0");
 
         document.getElementById("group-panel-kicker").textContent = `${panel.code} // SESSÃO EDITORIAL`;
-        document.getElementById("group-panel-count").textContent = `${countPadded} PALESTRANTES`;
-        document.getElementById("btn-mode-group").textContent = `Visão Grupo (${count})`;
+        document.getElementById("group-panel-count").textContent = `${countLabel} PALESTRANTES`;
+        document.getElementById("btn-mode-group").textContent = `Visão Grupo (${speakerCount})`;
 
         const titleEl = document.getElementById("group-panel-title");
         titleEl.textContent = panel.headline;
-        titleEl.classList.toggle("headline-compact", panel.headline.length > 34);
+        titleEl.classList.toggle("headline-compact", panel.headline.length > 32);
 
         document.getElementById("right-panel-tag").textContent = `PAINEL ATIVO • 0${panel.id} / 03`;
         document.getElementById("right-panel-theme").textContent = panel.headline;
@@ -1947,7 +1889,7 @@
         });
 
         const row = document.getElementById("speakers-row");
-        row.style.gridTemplateColumns = `repeat(${count}, 1fr)`;
+        row.style.gridTemplateColumns = `repeat(${speakerCount}, 1fr)`;
         row.innerHTML = "";
 
         panel.speakers.forEach((sp, idx) => {
@@ -2151,9 +2093,9 @@
     }
 
     loadPhotosFromStorage();
-    hydrateRepositoryPaths();
     renderPanel(0);
     drawGoldenWaves();
+    probeRepositoryImages();
 
     loadPhotosFromIndexedDb().then((loaded) => {
       if (loaded) {
